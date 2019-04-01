@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "updateRisk",
+  "title": "updateRisk",
+  "description": "Schema for project risk update",
+  "type": "object",
+  "properties": {
+    "description" : {
+      "type": "string",
+      "description" : "Risk description",
+      "minLength": 1
+    },
+    "probability" : {
+      "type": "number",
+      "description": "Probability of risk",
+      "minimum" : 0,
+      "maximum" : 100
+    },
+    "impact" : {
+      "type": "string",
+      "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"],
+      "description": "Impact level"
+    },
+    "mitigationAction" : {
+      "type": "string",
+      "description": "Mitigation action",
+      "minLength": 1
+    },
+    "resolutionCost" : {
+      "type": "number",
+      "description": "Cost to resolve the risk",
+      "minimum" : 0
+    }
+  }
+}

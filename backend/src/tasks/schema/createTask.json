@@ -1,0 +1,118 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "createTask",
+  "title": "createTask",
+  "description": "Schema for project task creation",
+  "type": "object",
+  "required": [
+    "summary",
+    "workType",
+    "estimateMin",
+    "estimateMax",
+    "taskCost",
+    "crashCost",
+    "taskType"
+  ],
+  "properties": {
+    "summary" : {
+      "type": "string",
+      "description": "Task summary",
+      "minLength": 1
+    },
+    "workType" : {
+      "type": "string",
+      "description": "Type of work",
+      "enum": ["Backend", "Frontend", "Android", "IOS", "QA", "DevOps"]
+    },
+    "taskType" : {
+      "type": "string",
+      "description": "Type of task",
+      "enum" : ["Task", "Milestone"]
+    },
+    "components" : {
+      "type": "array",
+      "description": "Task components",
+      "items": {
+        "type": "string",
+        "description": "Component"
+      }
+    },
+    "priority" : {
+      "type": "string",
+      "description": "Task priority",
+      "enum": ["Low", "Medium", "High"]
+    },
+    "assignee" : {
+      "type": "string",
+      "description": "Id of worker assigned to ticket",
+      "minLength": 1
+    },
+    "labels" : {
+      "type": "array",
+      "description": "Task labels",
+      "items": {
+        "type": "string",
+        "description": "Label"
+      }
+    },
+    "description" : {
+      "type": "string",
+      "description": "Task description",
+      "minLength": 1
+    },
+    "estimateMin" : {
+      "type": "number",
+      "description": "Task minimum estimate in hours",
+      "minimum" : 0
+    },
+    "estimateMax" : {
+      "type": "number",
+      "description": "Task maximum estimate in hours",
+      "minimum" : 0
+    },
+    "loggedTime" : {
+      "type": "number",
+      "description": "Time spent on this task in hours",
+      "minimum" : 0
+    },
+    "taskCost" : {
+      "type": "number",
+      "description": "Task implementation cost",
+      "minimum" : 0
+    },
+    "crashCost" : {
+      "type": "number",
+      "description": "Cost of task crash on 1 day",
+      "minimum" : 0
+    },
+    "comments" : {
+      "type": "array",
+      "description": "Task comments",
+      "items": {
+        "type": "string",
+        "description": "Comment text",
+        "minLength": 1
+      }
+    },
+    "reporter" : {
+      "type": "string",
+      "description": "Creator id",
+      "minLength": 1
+    },
+    "sprint" : {
+      "type": "string",
+      "description": "Sprint label",
+      "minLength": 1
+    },
+    "status" : {
+      "type": "string",
+      "description": "Task status",
+      "enum" : ["Ready for dev", "In development", "Review", "Done"]
+    },
+    "predecessor" : {
+      "type": "string",
+      "description": "Task which should be done before this starts",
+      "minLength": 1
+    }
+  }
+}

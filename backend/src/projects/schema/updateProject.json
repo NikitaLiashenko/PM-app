@@ -1,0 +1,55 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "updateProject",
+  "title": "updateProject",
+  "description": "Schema for project update",
+  "type": "object",
+  "properties": {
+    "description" : {
+      "type": "string",
+      "description" : "Project description",
+      "minLength": 1
+    },
+    "client" : {
+      "type": "string",
+      "description": "Client company name",
+      "minLength": 1
+    },
+    "technologies" : {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "startDate" : {
+      "type": "string",
+      "description": "Project start date",
+      "minLength": 10
+    },
+    "endDate" : {
+      "type": "string",
+      "description": "Project end date",
+      "minLength": 10
+    },
+    "hoursSpent" : {
+      "type": "number",
+      "description": "A number of already spent hours",
+      "minimum" : 0
+    },
+    "hoursEstimated" : {
+      "type": "number",
+      "description": "A number of hours estimated",
+      "minimum" : 0
+    },
+    "cost" : {
+      "type": "number",
+      "description": "Project cost",
+      "minimum" : 0
+    },
+    "payed" : {
+      "type": "number",
+      "description": "Money already payed for project",
+      "minimum" : 0
+    }
+  }
+}

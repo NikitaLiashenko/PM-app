@@ -1,0 +1,93 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "createWorker",
+  "title": "createWorker",
+  "description": "Schema for worker creation",
+  "type": "object",
+  "properties": {
+    "firstName" : {
+      "type": "string",
+      "description" : "Worker first name",
+      "minLength": 1
+    },
+    "lastName" : {
+      "type": "string",
+      "description" : "Worker last name",
+      "minLength": 1
+    },
+    "seniorityLevel" : {
+      "type": "string",
+      "enum": ["Trainee", "Junior", "Middle", "Senior"],
+      "description": "Worker seniority level"
+    },
+    "mainSkill" : {
+      "type": "string",
+      "enum": [".NET",
+        "Java",
+        "Android",
+        "QA Automation",
+        "iOS",
+        "JavaScript",
+        "Python",
+        "QA",
+        "Business Analysis",
+        "Design",
+        "Node.JS",
+        "DevOps"],
+      "description": "Worker's main skill"
+    },
+    "skills" : {
+      "type": "array",
+      "description": "Worker skills",
+      "items": {
+        "type": "string"
+      }
+    },
+    "location" : {
+      "type": "string",
+      "description": "Worker location",
+      "enum": ["Ukraine", "Poland", "UK", "USA"]
+    },
+    "vacations" : {
+      "type": "array",
+      "description": "Worker planned vacations",
+      "items": {
+        "type": "object",
+        "description": "Worker vacation",
+        "required": [
+          "startDate",
+          "endDate"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "startDate" : {
+            "type": "string",
+            "description": "Vacation start date",
+            "minLength": 10
+          },
+          "endDate" : {
+            "type": "string",
+            "description": "Vacation end date",
+            "minLength": 10
+          }
+        }
+      }
+    },
+    "project" : {
+      "type": "object",
+      "description": "Project worker assigned to",
+      "properties": {
+        "projectId" : {
+          "type": "string",
+          "description": "Project id",
+          "minLength": 1
+        },
+        "endDate" : {
+          "type": "string",
+          "description": "Project end date",
+          "minLength": 10
+        }
+      }
+    }
+  }
+}

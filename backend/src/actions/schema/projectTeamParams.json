@@ -1,0 +1,375 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "projectTeamParams",
+  "title": "projectTeamParams",
+  "description": "Schema for project team preparation",
+  "type": "object",
+  "properties": {
+    "backend" : {
+      "type": "object",
+      "description": "Backend team info",
+      "required": [
+        "amount",
+        "seniority",
+        "mainSkill",
+        "skills",
+        "teamStartDate"
+      ],
+      "properties": {
+        "amount" : {
+          "type": "number",
+          "description": "Amount of team members",
+          "minimum" : 1
+        },
+        "seniority" : {
+          "type": "object",
+          "description": "Map of seniority levels and their amount",
+          "properties": {
+            "Senior" : {
+              "type": "number"
+            },
+            "Middle" : {
+              "type": "number"
+            },
+            "Junior" : {
+              "type": "number"
+            }
+          }
+        },
+        "mainSkill" : {
+          "type": "string",
+          "description": "Main skill required for this team",
+          "enum": [
+            ".NET",
+            "Java",
+            "Android",
+            "QA Automation",
+            "iOS",
+            "JavaScript",
+            "Python",
+            "QA",
+            "Design",
+            "Node.JS",
+            "DevOps"
+          ]
+        },
+        "skills" : {
+          "type": "array",
+          "description": "Important skills for this team",
+          "items": {
+            "type": "string"
+          }
+        },
+        "teamStartDate" : {
+          "type": "string",
+          "description": "Starting date for particular team"
+        }
+      }
+    },
+    "frontend" : {
+      "type": "object",
+      "description": "Frontend team info",
+      "required": [
+        "amount",
+        "seniority",
+        "mainSkill",
+        "skills",
+        "teamStartDate"
+      ],
+      "properties": {
+        "amount" : {
+          "type": "number",
+          "description": "Amount of team members",
+          "minimum" : 1
+        },
+        "seniority" : {
+          "type": "object",
+          "description": "Map of seniority levels and their amount",
+          "properties": {
+            "Senior" : {
+              "type": "number"
+            },
+            "Middle" : {
+              "type": "number"
+            },
+            "Junior" : {
+              "type": "number"
+            }
+          }
+        },
+        "mainSkill" : {
+          "type": "string",
+          "description": "Main skill required for this team",
+          "enum": [
+            ".NET",
+            "Java",
+            "Android",
+            "QA Automation",
+            "iOS",
+            "JavaScript",
+            "Python",
+            "QA",
+            "Design",
+            "Node.JS",
+            "DevOps"
+          ]
+        },
+        "skills" : {
+          "type": "array",
+          "description": "Important skills for this team",
+          "items": {
+            "type": "string"
+          }
+        },
+        "teamStartDate" : {
+          "type": "string",
+          "description": "Starting date for particular team"
+        }
+      }
+    },
+    "mobile" : {
+      "type": "object",
+      "description": "Mobile team info",
+      "required": [
+        "amount",
+        "seniority",
+        "mainSkill",
+        "skills",
+        "teamStartDate"
+      ],
+      "properties": {
+        "amount" : {
+          "type": "number",
+          "description": "Amount of team members",
+          "minimum" : 1
+        },
+        "seniority" : {
+          "type": "object",
+          "description": "Map of seniority levels and their amount",
+          "properties": {
+            "Senior" : {
+              "type": "number"
+            },
+            "Middle" : {
+              "type": "number"
+            },
+            "Junior" : {
+              "type": "number"
+            }
+          }
+        },
+        "mainSkill" : {
+          "type": "string",
+          "description": "Main skill required for this team",
+          "enum": [
+            ".NET",
+            "Java",
+            "Android",
+            "QA Automation",
+            "iOS",
+            "JavaScript",
+            "Python",
+            "QA",
+            "Design",
+            "Node.JS",
+            "DevOps"
+          ]
+        },
+        "skills" : {
+          "type": "array",
+          "description": "Important skills for this team",
+          "items": {
+            "type": "string"
+          }
+        },
+        "teamStartDate" : {
+          "type": "string",
+          "description": "Starting date for particular team"
+        }
+      }
+    },
+    "qa" : {
+      "type": "object",
+      "description": "QA team info",
+      "required": [
+        "amount",
+        "seniority",
+        "mainSkill",
+        "skills",
+        "teamStartDate"
+      ],
+      "properties": {
+        "amount" : {
+          "type": "number",
+          "description": "Amount of team members",
+          "minimum" : 1
+        },
+        "seniority" : {
+          "type": "object",
+          "description": "Map of seniority levels and their amount",
+          "properties": {
+            "Senior" : {
+              "type": "number"
+            },
+            "Middle" : {
+              "type": "number"
+            },
+            "Junior" : {
+              "type": "number"
+            }
+          }
+        },
+        "mainSkill" : {
+          "type": "string",
+          "description": "Main skill required for this team",
+          "enum": [
+            ".NET",
+            "Java",
+            "Android",
+            "QA Automation",
+            "iOS",
+            "JavaScript",
+            "Python",
+            "QA",
+            "Design",
+            "Node.JS",
+            "DevOps"
+          ]
+        },
+        "skills" : {
+          "type": "array",
+          "description": "Important skills for this team",
+          "items": {
+            "type": "string"
+          }
+        },
+        "teamStartDate" : {
+          "type": "string",
+          "description": "Starting date for particular team"
+        }
+      }
+    },
+    "design" : {
+      "type": "object",
+      "description": "Design team info",
+      "required": [
+        "amount",
+        "seniority",
+        "mainSkill",
+        "skills",
+        "teamStartDate"
+      ],
+      "properties": {
+        "amount" : {
+          "type": "number",
+          "description": "Amount of team members",
+          "minimum" : 1
+        },
+        "seniority" : {
+          "type": "object",
+          "description": "Map of seniority levels and their amount",
+          "properties": {
+            "Senior" : {
+              "type": "number"
+            },
+            "Middle" : {
+              "type": "number"
+            },
+            "Junior" : {
+              "type": "number"
+            }
+          }
+        },
+        "mainSkill" : {
+          "type": "string",
+          "description": "Main skill required for this team",
+          "enum": [
+            ".NET",
+            "Java",
+            "Android",
+            "QA Automation",
+            "iOS",
+            "JavaScript",
+            "Python",
+            "QA",
+            "Design",
+            "Node.JS",
+            "DevOps"
+          ]
+        },
+        "skills" : {
+          "type": "array",
+          "description": "Important skills for this team",
+          "items": {
+            "type": "string"
+          }
+        },
+        "teamStartDate" : {
+          "type": "string",
+          "description": "Starting date for particular team"
+        }
+      }
+    },
+    "devops" : {
+      "type": "object",
+      "description": "DevOps team info",
+      "required": [
+        "amount",
+        "seniority",
+        "mainSkill",
+        "skills",
+        "teamStartDate"
+      ],
+      "properties": {
+        "amount" : {
+          "type": "number",
+          "description": "Amount of team members",
+          "minimum" : 1
+        },
+        "seniority" : {
+          "type": "object",
+          "description": "Map of seniority levels and their amount",
+          "properties": {
+            "Senior" : {
+              "type": "number"
+            },
+            "Middle" : {
+              "type": "number"
+            },
+            "Junior" : {
+              "type": "number"
+            }
+          }
+        },
+        "mainSkill" : {
+          "type": "string",
+          "description": "Main skill required for this team",
+          "enum": [
+            ".NET",
+            "Java",
+            "Android",
+            "QA Automation",
+            "iOS",
+            "JavaScript",
+            "Python",
+            "QA",
+            "Design",
+            "Node.JS",
+            "DevOps"
+          ]
+        },
+        "skills" : {
+          "type": "array",
+          "description": "Important skills for this team",
+          "items": {
+            "type": "string"
+          }
+        },
+        "teamStartDate" : {
+          "type": "string",
+          "description": "Starting date for particular team"
+        }
+      }
+    }
+  }
+}

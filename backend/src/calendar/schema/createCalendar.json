@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "createCalendar",
+  "title": "createCalendar",
+  "description": "Schema for calendar creation",
+  "type": "object",
+  "properties": {
+    "holidays" : {
+      "type": "array",
+      "description": "Calendar planned holidays",
+      "items": {
+        "type": "object",
+        "description": "Holiday",
+        "required": [
+          "date",
+          "description"
+        ],
+        "properties": {
+          "date" : {
+            "type": "string",
+            "description": "Holiday date",
+            "minLength": 10
+          },
+          "description" : {
+            "type": "string",
+            "description": "Holiday reason",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "aws" : {
+    "dynamodb" : {
+      "users" : {
+        "table" : "users",
+        "roleIndex" : "role-index",
+        "usernameRoleIndex" : "username-role-index"
+      },
+      "projects" : {
+        "table" : "projects",
+        "usernameIndex" : "username-index",
+        "projectIdUsernameIndex" : "projectId-username-index"
+      },
+      "calendar" : {
+        "table" : "calendar"
+      }
+    }
+  }
+}

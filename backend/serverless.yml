@@ -1,0 +1,1111 @@
+service: pm-app
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region, 'us-west-2'}
+  environment:
+    NODE_ENV: ${env:NODE_ENV}
+    USER_POOL_ID: ${self:custom.userPoolId.${self:provider.stage}}
+    CLIENT_ID: ${self:custom.clientId.${self:provider.stage}}
+  splitStacks:
+    perFunction: true
+
+custom:
+  stages:
+    - dev
+    - staging
+    - production
+  userPoolId:
+    dev: ${ssm:/pm-app/dev/user-pool-id~true}
+    staging: ${ssm:/pm-app/staging/user-pool-id~true}
+    production: ${ssm:/pm-app/production/user-pool-id~true}
+  clientId:
+    dev: ${ssm:/pm-app/dev/client-id~true}
+    staging: ${ssm:/pm-app/staging/client-id~true}
+    production: ${ssm:/pm-app/production/client-id~true}
+
+functions:
+# AUTH
+  authorizer:
+    handler: src/auth/authorizer.handler
+    runtime: nodejs8.10
+    memorySize: 128
+  signup:
+    handler: src/auth/signup.handler
+    runtime: nodejs8.10
+    memorySize: 128
+    timeout: 30
+    role: cognitoRole
+    events:
+      - http:
+          path: /signup
+          method: post
+          cors: true
+  signin:
+    handler : src/auth/signin.handler
+    runtime: nodejs8.10
+    memorySize: 128
+    timeout: 30
+    role: cognitoRole
+    events:
+      - http:
+          path: /signin
+          method: post
+          cors: true
+  postConfirm:
+    handler: src/auth/postConfirm.handler
+    runtime: nodejs8.10
+    memorySize: 128
+    timeout: 30
+    role: usersDynamoReadWriteRole
+# PROJECTS API
+  getAllProjects:
+    handler: src/projects/getAllProjects.handler
+    runtime: nodejs8.10
+    memorySize: 128
+    timeout: 30
+    role: projectsDynamoReadRole
+    events:
+      - http:
+          path: /project
+          method: get
+          authorizer: authorizer
+          cors:
+            origins:
+              - '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+  getProject:
+    handler: src/projects/getProject.handler
+    runtime: nodejs8.10
+    memorySize: 128
+    timeout: 30
+    role: projectsDynamoReadRole
+    events:
+      - http:
+          path: /project/{projectId}
+          method: get
+          authorizer: authorizer
+          cors:
+            origins:
+              - '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+  createProject:
+    handler: src/projects/createProject.handler
+    runtime: nodejs8.10
+    memorySize: 128
+    timeout: 30
+    role: projectsDynamoReadWriteRole
+    events:
+      - http:
+          path: /project
+          method: post
+          authorizer: authorizer
+          cors:
+            origins:
+              - '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+  updateProject:
+    handler: src/projects/updateProject.handler
+    runtime: nodejs8.10
+    memorySize: 128
+    timeout: 30
+    role: projectsDynamoReadWriteRole
+    events:
+      - http:
+          path: /project/{projectId}
+          method: put
+          authorizer: authorizer
+          cors:
+            origins:
+              - '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+# RISKS API
+  getAllProjectRisks:
+    handler: src/risks/getAllProjectRisks.handler
+    runtime: nodejs8.10
+    memorySize: 128
+    timeout: 30
+    role: projectsDynamoReadRole
+    events:
+      - http:
+          path: /project/{projectId}/risk
+          method: get
+          authorizer: authorizer
+          cors:
+            origins:
+              - '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+  getProjectRisk:
+    handler: src/risks/getProjectRisk.handler
+    runtime: nodejs8.10
+    memorySize: 128
+    timeout: 30
+    role: projectsDynamoReadRole
+    events:
+      - http:
+          path: /project/{projectId}/risk/{riskId}
+          method: get
+          authorizer: authorizer
+          cors:
+            origins:
+              - '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+  createProjectRisk:
+    handler: src/risks/createProjectRisk.handler
+    runtime: nodejs8.10
+    memorySize: 128
+    timeout: 30
+    role: projectsDynamoReadWriteRole
+    events:
+      - http:
+          path: /project/{projectId}/risk
+          method: post
+          authorizer: authorizer
+          cors:
+            origins:
+              - '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+  updateProjectRisk:
+    handler: src/risks/updateProjectRisk.handler
+    runtime: nodejs8.10
+    memorySize: 128
+    timeout: 30
+    role: projectsDynamoReadWriteRole
+    events:
+      - http:
+          path: /project/{projectId}/risk/{riskId}
+          method: put
+          authorizer: authorizer
+          cors:
+            origins:
+              - '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+  deleteProjectRisk:
+    handler: src/risks/deleteProjectRisk.handler
+    runtime: nodejs8.10
+    memorySize: 128
+    timeout: 30
+    role: projectsDynamoReadWriteRole
+    events:
+      - http:
+          path: /project/{projectId}/risk/{riskId}
+          method: delete
+          authorizer: authorizer
+          cors:
+            origins:
+              - '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+# WORKERS API
+  getAllWorkers:
+    handler: src/workers/getAllWorkers.handler
+    runtime: nodejs8.10
+    memorySize: 128
+    timeout: 30
+    role: usersDynamoReadRole
+    events:
+      - http:
+          path: /worker
+          method: get
+          authorizer: authorizer
+          cors:
+            origins:
+              - '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+  getWorker:
+    handler: src/workers/getWorker.handler
+    runtime: nodejs8.10
+    memorySize: 128
+    timeout: 30
+    role: usersDynamoReadRole
+    events:
+      - http:
+          path: /worker/{workerId}
+          method: get
+          authorizer: authorizer
+          cors:
+            origins:
+              - '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+  createWorker:
+    handler: src/workers/createWorker.handler
+    runtime: nodejs8.10
+    memorySize: 128
+    timeout: 30
+    role: usersDynamoReadWriteRole
+    events:
+      - http:
+          path: /worker
+          method: post
+          authorizer: authorizer
+          cors:
+            origins:
+              - '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+  updateWorker:
+    handler: src/workers/updateWorker.handler
+    runtime: nodejs8.10
+    memorySize: 128
+    timeout: 30
+    role: usersDynamoReadWriteRole
+    events:
+      - http:
+          path: /worker/{workerId}
+          method: put
+          authorizer: authorizer
+          cors:
+            origins:
+              - '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+  deleteWorker:
+    handler: src/workers/deleteWorker.handler
+    runtime: nodejs8.10
+    memorySize: 128
+    timeout: 30
+    role: usersDynamoReadWriteRole
+    events:
+      - http:
+          path: /worker/{workerId}
+          method: delete
+          authorizer: authorizer
+          cors:
+            origins:
+              - '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+# Calendar API
+  getCalendar:
+    handler: src/calendar/getCalendar.handler
+    runtime: nodejs8.10
+    memorySize: 128
+    timeout: 30
+    role: calendarDynamoReadRole
+    events:
+      - http:
+          path: /calendar/{location}
+          method: get
+          authorizer: authorizer
+          cors:
+            origins:
+              - '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+  createCalendar:
+    handler: src/calendar/createCalendar.handler
+    runtime: nodejs8.10
+    memorySize: 128
+    timeout: 30
+    role: calendarDynamoReadWriteRole
+    events:
+      - http:
+          path: /calendar/{location}
+          method: post
+          authorizer: authorizer
+          cors:
+            origins:
+              - '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+  updateCalendar:
+    handler: src/calendar/updateCalendar.handler
+    runtime: nodejs8.10
+    memorySize: 128
+    timeout: 30
+    role: calendarDynamoReadWriteRole
+    events:
+      - http:
+          path: /calendar/{location}
+          method: put
+          authorizer: authorizer
+          cors:
+            origins:
+              - '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+  getCalendarIntersection:
+    handler: src/calendar/getCalendarIntersection.handler
+    runtime: nodejs8.10
+    memorySize: 128
+    timeout: 30
+    role: calendarDynamoReadRole
+    events:
+      - http:
+          path: /calendar/intersection
+          method: get
+          authorizer: authorizer
+          cors:
+            origins:
+              - '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+  getCalendarUnique:
+    handler: src/calendar/getCalendarUnique.handler
+    runtime: nodejs8.10
+    memorySize: 128
+    timeout: 30
+    role: calendarDynamoReadRole
+    events:
+      - http:
+          path: /calendar/unique
+          method: get
+          authorizer: authorizer
+          cors:
+            origins:
+              - '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+# TASKS API
+  getAllProjectTasks:
+    handler: src/tasks/getAllProjectTasks.handler
+    runtime: nodejs8.10
+    memorySize: 128
+    timeout: 30
+    role: projectsDynamoReadRole
+    events:
+      - http:
+          path: /project/{projectId}/task
+          method: get
+          authorizer: authorizer
+          cors:
+            origins:
+              - '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+  getProjectTask:
+    handler: src/tasks/getProjectTask.handler
+    runtime: nodejs8.10
+    memorySize: 128
+    timeout: 30
+    role: projectsDynamoReadRole
+    events:
+      - http:
+          path: /project/{projectId}/task/{taskId}
+          method: get
+          authorizer: authorizer
+          cors:
+            origins:
+              - '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+  createProjectTask:
+    handler: src/tasks/createProjectTask.handler
+    runtime: nodejs8.10
+    memorySize: 128
+    timeout: 30
+    role: projectsDynamoReadWriteRole
+    events:
+      - http:
+          path: /project/{projectId}/task
+          method: post
+          authorizer: authorizer
+          cors:
+            origins:
+              - '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+  updateProjectTask:
+    handler: src/tasks/updateProjectTask.handler
+    runtime: nodejs8.10
+    memorySize: 128
+    timeout: 30
+    role: projectsDynamoReadWriteRole
+    events:
+      - http:
+          path: /project/{projectId}/task/{taskId}
+          method: put
+          authorizer: authorizer
+          cors:
+            origins:
+              - '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+  deleteProjectTask:
+    handler: src/tasks/deleteProjectTask.handler
+    runtime: nodejs8.10
+    memorySize: 128
+    timeout: 30
+    role: projectsDynamoReadWriteRole
+    events:
+      - http:
+          path: /project/{projectId}/task/{taskId}
+          method: delete
+          authorizer: authorizer
+          cors:
+            origins:
+              - '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+# Actions API
+  getProjectCriticalPath:
+    handler: src/actions/getProjectCriticalPath.handler
+    runtime: nodejs8.10
+    memorySize: 128
+    timeout: 30
+    role: projectsDynamoReadWriteRole
+    events:
+      - http:
+          path: /project/{projectId}/criticalPath
+          method: post
+          authorizer: authorizer
+          cors:
+            origins:
+              - '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+  getProjectCrash:
+    handler: src/actions/getProjectCrash.handler
+    runtime: nodejs8.10
+    memorySize: 128
+    timeout: 30
+    role: projectsDynamoReadWriteRole
+    events:
+      - http:
+          path: /project/{projectId}/crash
+          method: post
+          authorizer: authorizer
+          cors:
+            origins:
+              - '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+  getProjectStateInCrash:
+    handler: src/actions/getProjectStateInCrash.handler
+    runtime: nodejs8.10
+    memorySize: 128
+    timeout: 30
+    role: projectsDynamoReadWriteRole
+    events:
+      - http:
+          path: /project/{projectId}/crash/{crashId}
+          method: get
+          authorizer: authorizer
+          cors:
+            origins:
+              - '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+  confirmProjectCrash:
+    handler: src/actions/confirmProjectCrash.handler
+    runtime: nodejs8.10
+    memorySize: 128
+    timeout: 30
+    role: projectsDynamoReadWriteRole
+    events:
+      - http:
+          path: /project/{projectId}/crash/{crashId}
+          method: post
+          authorizer: authorizer
+          cors:
+            origins:
+              - '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+  prepareProjectTeam:
+    handler: src/actions/prepareProjectTeam.handler
+    runtime: nodejs8.10
+    memorySize: 128
+    timeout: 30
+    role: projectsUsersDynamoReadWriteRole
+    events:
+      - http:
+          path: /project/{projectId}/team
+          method: post
+          authorizer: authorizer
+          cors:
+            origins:
+              - '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+  confirmProjectTeam:
+    handler: src/actions/confirmProjectTeam.handler
+    runtime: nodejs8.10
+    memorySize: 128
+    timeout: 30
+    role: projectsUsersDynamoReadWriteRole
+    events:
+      - http:
+          path: /project/{projectId}/team
+          method: put
+          authorizer: authorizer
+          cors:
+            origins:
+              - '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+
+resources:
+  Resources:
+    projectsDynamoReadRole:
+      Type: AWS::IAM::Role
+      Properties:
+        Path: '/'
+        RoleName: 'Projects-ReadRole'
+        AssumeRolePolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Principal:
+                Service:
+                  - lambda.amazonaws.com
+              Action: sts:AssumeRole
+        Policies:
+          - PolicyName: 'projects-read-policy'
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - logs:CreateLogGroup
+                    - logs:CreateLogStream
+                    - logs:PutLogEvents
+                  Resource:
+                    - 'Fn::Join':
+                        - ':'
+                        - - 'arn:aws:logs'
+                          - Ref: 'AWS::Region'
+                          - Ref: 'AWS::AccountId'
+                          - 'log-group:/aws/lambda/*:*:*'
+                - Effect: Allow
+                  Action:
+                    - dynamodb:Query
+                  Resource:
+                    - 'Fn::Join':
+                        - ':'
+                        - - 'arn:aws:dynamodb'
+                          - Ref: 'AWS::Region'
+                          - Ref: 'AWS::AccountId'
+                          - 'table/projects'
+                    - 'Fn::Join':
+                        - ':'
+                        - - 'arn:aws:dynamodb'
+                          - Ref: 'AWS::Region'
+                          - Ref: 'AWS::AccountId'
+                          - 'table/projects/index/*'
+                - Effect: Allow
+                  Action:
+                    - ec2:CreateNetworkInterface
+                    - ec2:DescribeNetworkInterfaces
+                    - ec2:DetachNetworkInterface
+                    - ec2:DeleteNetworkInterface
+                  Resource: "*"
+    projectsDynamoReadWriteRole:
+      Type: AWS::IAM::Role
+      Properties:
+        Path: '/'
+        RoleName: 'Projects-ReadWriteRole'
+        AssumeRolePolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Principal:
+                Service:
+                  - lambda.amazonaws.com
+              Action: sts:AssumeRole
+        Policies:
+          - PolicyName: 'projects-read-write-policy'
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - logs:CreateLogGroup
+                    - logs:CreateLogStream
+                    - logs:PutLogEvents
+                  Resource:
+                    - 'Fn::Join':
+                        - ':'
+                        - - 'arn:aws:logs'
+                          - Ref: 'AWS::Region'
+                          - Ref: 'AWS::AccountId'
+                          - 'log-group:/aws/lambda/*:*:*'
+                - Effect: Allow
+                  Action:
+                    - dynamodb:Query
+                    - dynamodb:PutItem
+                    - dynamodb:UpdateItem
+                  Resource:
+                    - 'Fn::Join':
+                        - ':'
+                        - - 'arn:aws:dynamodb'
+                          - Ref: 'AWS::Region'
+                          - Ref: 'AWS::AccountId'
+                          - 'table/projects'
+                    - 'Fn::Join':
+                        - ':'
+                        - - 'arn:aws:dynamodb'
+                          - Ref: 'AWS::Region'
+                          - Ref: 'AWS::AccountId'
+                          - 'table/projects/index/*'
+                - Effect: Allow
+                  Action:
+                    - ec2:CreateNetworkInterface
+                    - ec2:DescribeNetworkInterfaces
+                    - ec2:DetachNetworkInterface
+                    - ec2:DeleteNetworkInterface
+                  Resource: "*"
+    cognitoRole:
+      Type: AWS::IAM::Role
+      Properties:
+        Path: '/'
+        RoleName: 'Cognito-Role'
+        AssumeRolePolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Principal:
+                Service:
+                  - lambda.amazonaws.com
+              Action: sts:AssumeRole
+        Policies:
+          - PolicyName: 'cognito-policy'
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - logs:CreateLogGroup
+                    - logs:CreateLogStream
+                    - logs:PutLogEvents
+                  Resource:
+                    - 'Fn::Join':
+                        - ':'
+                        - - 'arn:aws:logs'
+                          - Ref: 'AWS::Region'
+                          - Ref: 'AWS::AccountId'
+                          - 'log-group:/aws/lambda/*:*:*'
+                - Effect: Allow
+                  Action: '*'
+                  Resource:
+                    - 'Fn::Join':
+                        - ':'
+                        - - 'arn:aws:cognito-idp'
+                          - Ref: 'AWS::Region'
+                          - Ref: 'AWS::AccountId'
+                          - 'userpool/us-west-2_kfnWJrAGT'
+                - Effect: Allow
+                  Action:
+                    - dynamodb:Query
+                  Resource:
+                    - 'Fn::Join':
+                        - ':'
+                        - - 'arn:aws:dynamodb'
+                          - Ref: 'AWS::Region'
+                          - Ref: 'AWS::AccountId'
+                          - 'table/users'
+                    - 'Fn::Join':
+                        - ':'
+                        - - 'arn:aws:dynamodb'
+                          - Ref: 'AWS::Region'
+                          - Ref: 'AWS::AccountId'
+                          - 'table/users/index/*'
+                - Effect: Allow
+                  Action:
+                    - ec2:CreateNetworkInterface
+                    - ec2:DescribeNetworkInterfaces
+                    - ec2:DetachNetworkInterface
+                    - ec2:DeleteNetworkInterface
+                  Resource: "*"
+    usersDynamoReadRole:
+      Type: AWS::IAM::Role
+      Properties:
+        Path: '/'
+        RoleName: 'Users-ReadRole'
+        AssumeRolePolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Principal:
+                Service:
+                  - lambda.amazonaws.com
+              Action: sts:AssumeRole
+        Policies:
+          - PolicyName: 'users-read-policy'
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - logs:CreateLogGroup
+                    - logs:CreateLogStream
+                    - logs:PutLogEvents
+                  Resource:
+                    - 'Fn::Join':
+                        - ':'
+                        - - 'arn:aws:logs'
+                          - Ref: 'AWS::Region'
+                          - Ref: 'AWS::AccountId'
+                          - 'log-group:/aws/lambda/*:*:*'
+                - Effect: Allow
+                  Action:
+                    - dynamodb:Query
+                  Resource:
+                    - 'Fn::Join':
+                        - ':'
+                        - - 'arn:aws:dynamodb'
+                          - Ref: 'AWS::Region'
+                          - Ref: 'AWS::AccountId'
+                          - 'table/users'
+                    - 'Fn::Join':
+                        - ':'
+                        - - 'arn:aws:dynamodb'
+                          - Ref: 'AWS::Region'
+                          - Ref: 'AWS::AccountId'
+                          - 'table/users/index/*'
+                - Effect: Allow
+                  Action:
+                    - ec2:CreateNetworkInterface
+                    - ec2:DescribeNetworkInterfaces
+                    - ec2:DetachNetworkInterface
+                    - ec2:DeleteNetworkInterface
+                  Resource: "*"
+    usersDynamoReadWriteRole:
+      Type: AWS::IAM::Role
+      Properties:
+        Path: '/'
+        RoleName: 'Users-ReadWriteRole'
+        AssumeRolePolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Principal:
+                Service:
+                  - lambda.amazonaws.com
+              Action: sts:AssumeRole
+        Policies:
+          - PolicyName: 'users-read-write-policy'
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - logs:CreateLogGroup
+                    - logs:CreateLogStream
+                    - logs:PutLogEvents
+                  Resource:
+                    - 'Fn::Join':
+                        - ':'
+                        - - 'arn:aws:logs'
+                          - Ref: 'AWS::Region'
+                          - Ref: 'AWS::AccountId'
+                          - 'log-group:/aws/lambda/*:*:*'
+                - Effect: Allow
+                  Action:
+                    - dynamodb:Query
+                    - dynamodb:PutItem
+                    - dynamodb:UpdateItem
+                    - dynamodb:DeleteItem
+                  Resource:
+                    - 'Fn::Join':
+                        - ':'
+                        - - 'arn:aws:dynamodb'
+                          - Ref: 'AWS::Region'
+                          - Ref: 'AWS::AccountId'
+                          - 'table/users'
+                - Effect: Allow
+                  Action:
+                    - ec2:CreateNetworkInterface
+                    - ec2:DescribeNetworkInterfaces
+                    - ec2:DetachNetworkInterface
+                    - ec2:DeleteNetworkInterface
+                  Resource: "*"
+    calendarDynamoReadRole:
+      Type: AWS::IAM::Role
+      Properties:
+        Path: '/'
+        RoleName: 'Calendar-ReadRole'
+        AssumeRolePolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Principal:
+                Service:
+                  - lambda.amazonaws.com
+              Action: sts:AssumeRole
+        Policies:
+          - PolicyName: 'calendar-read-policy'
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - logs:CreateLogGroup
+                    - logs:CreateLogStream
+                    - logs:PutLogEvents
+                  Resource:
+                    - 'Fn::Join':
+                        - ':'
+                        - - 'arn:aws:logs'
+                          - Ref: 'AWS::Region'
+                          - Ref: 'AWS::AccountId'
+                          - 'log-group:/aws/lambda/*:*:*'
+                - Effect: Allow
+                  Action:
+                    - dynamodb:Query
+                  Resource:
+                    - 'Fn::Join':
+                        - ':'
+                        - - 'arn:aws:dynamodb'
+                          - Ref: 'AWS::Region'
+                          - Ref: 'AWS::AccountId'
+                          - 'table/calendar'
+                - Effect: Allow
+                  Action:
+                    - ec2:CreateNetworkInterface
+                    - ec2:DescribeNetworkInterfaces
+                    - ec2:DetachNetworkInterface
+                    - ec2:DeleteNetworkInterface
+                  Resource: "*"
+    calendarDynamoReadWriteRole:
+      Type: AWS::IAM::Role
+      Properties:
+        Path: '/'
+        RoleName: 'Calendar-ReadWriteRole'
+        AssumeRolePolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Principal:
+                Service:
+                  - lambda.amazonaws.com
+              Action: sts:AssumeRole
+        Policies:
+          - PolicyName: 'calendar-read-write-policy'
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - logs:CreateLogGroup
+                    - logs:CreateLogStream
+                    - logs:PutLogEvents
+                  Resource:
+                    - 'Fn::Join':
+                        - ':'
+                        - - 'arn:aws:logs'
+                          - Ref: 'AWS::Region'
+                          - Ref: 'AWS::AccountId'
+                          - 'log-group:/aws/lambda/*:*:*'
+                - Effect: Allow
+                  Action:
+                    - dynamodb:Query
+                    - dynamodb:PutItem
+                    - dynamodb:UpdateItem
+                    - dynamodb:DeleteItem
+                  Resource:
+                    - 'Fn::Join':
+                        - ':'
+                        - - 'arn:aws:dynamodb'
+                          - Ref: 'AWS::Region'
+                          - Ref: 'AWS::AccountId'
+                          - 'table/calendar'
+                - Effect: Allow
+                  Action:
+                    - ec2:CreateNetworkInterface
+                    - ec2:DescribeNetworkInterfaces
+                    - ec2:DetachNetworkInterface
+                    - ec2:DeleteNetworkInterface
+                  Resource: "*"
+    projectsUsersDynamoReadWriteRole:
+      Type: AWS::IAM::Role
+      Properties:
+        Path: '/'
+        RoleName: 'Projects-Users-ReadWriteRole'
+        AssumeRolePolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Principal:
+                Service:
+                  - lambda.amazonaws.com
+              Action: sts:AssumeRole
+        Policies:
+          - PolicyName: 'projects-users-read-write-policy'
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - logs:CreateLogGroup
+                    - logs:CreateLogStream
+                    - logs:PutLogEvents
+                  Resource:
+                    - 'Fn::Join':
+                        - ':'
+                        - - 'arn:aws:logs'
+                          - Ref: 'AWS::Region'
+                          - Ref: 'AWS::AccountId'
+                          - 'log-group:/aws/lambda/*:*:*'
+                - Effect: Allow
+                  Action:
+                    - dynamodb:Query
+                    - dynamodb:PutItem
+                    - dynamodb:UpdateItem
+                  Resource:
+                    - 'Fn::Join':
+                        - ':'
+                        - - 'arn:aws:dynamodb'
+                          - Ref: 'AWS::Region'
+                          - Ref: 'AWS::AccountId'
+                          - 'table/projects'
+                    - 'Fn::Join':
+                        - ':'
+                        - - 'arn:aws:dynamodb'
+                          - Ref: 'AWS::Region'
+                          - Ref: 'AWS::AccountId'
+                          - 'table/projects/index/*'
+                    - 'Fn::Join':
+                        - ':'
+                        - - 'arn:aws:dynamodb'
+                          - Ref: 'AWS::Region'
+                          - Ref: 'AWS::AccountId'
+                          - 'table/users'
+                    - 'Fn::Join':
+                        - ':'
+                        - - 'arn:aws:dynamodb'
+                          - Ref: 'AWS::Region'
+                          - Ref: 'AWS::AccountId'
+                          - 'table/users/index/*'
+                - Effect: Allow
+                  Action:
+                    - ec2:CreateNetworkInterface
+                    - ec2:DescribeNetworkInterfaces
+                    - ec2:DetachNetworkInterface
+                    - ec2:DeleteNetworkInterface
+                  Resource: "*"
+
+plugins:
+  - serverless-plugin-split-stacks
