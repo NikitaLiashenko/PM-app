@@ -63,9 +63,26 @@ const updateWorker = async(updateParams) => {
     .then(result => result.Attributes);
 };
 
+const getCalendar = async(location) => {
+  const params = {
+    TableName : config.get('aws.dynamodb.calendar.table'),
+    KeyConditionExpression: '#location = :location',
+    ExpressionAttributeNames : {
+      '#location' : 'location'
+    },
+    ExpressionAttributeValues: {
+      ':location' : location
+    }
+  };
+
+  return await dynamo.query(params).promise()
+    .then(result => result.Items[0]);
+};
+
 module.exports = {
   getProject,
   updateProject,
   getAllWorkers,
-  updateWorker
+  updateWorker,
+  getCalendar
 };
