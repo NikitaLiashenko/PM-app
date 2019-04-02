@@ -666,6 +666,26 @@ functions:
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
+  getProjectTeam:
+    handler: src/actions/getProjectTeam.handler
+    runtime: nodejs8.10
+    memorySize: 128
+    timeout: 30
+    role: usersDynamoReadRole
+    events:
+      - http:
+          path: /project/{projectId}/team
+          method: get
+          authorizer: authorizer
+          cors:
+            origins:
+              - '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
   countProjectDates:
     handler: src/actions/countProjectDates.handler
     runtime: nodejs8.10
