@@ -1,0 +1,49 @@
+.content-background {
+    display: block;
+    background-image: url("../../images/background.png");
+    height: 100%;
+}
+
+.home-title {
+    text-align: center;
+    color: white;
+    font-size: 50px;
+    margin-bottom: 0;
+}
+
+.home-description {
+    text-align: center;
+    color: white;
+    font-size: 18px;
+}
+
+.home-center {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.getting-started-button{
+    font-size: 18px;
+    color: white;
+    background-color: #85c800;
+    border-color: #85c800;
+    width: 40%;
+    margin: 30% auto 0 auto;
+}
+
+.getting-started-button:focus{
+    font-size: 18px;
+    color: white;
+    background-color: #85c800;
+    border-color: #85c800;
+    width: 40%;
+    margin: 30% auto 0 auto;
+}
+
+.getting-started-button:hover{
+    background-color: #73bd00;
+    border-color: #73bd00;
+    color: white;
+}

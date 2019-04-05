@@ -42,7 +42,16 @@ functions:
       - http:
           path: /signup
           method: post
-          cors: true
+          cors:
+            origin: '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
   signin:
     handler : src/auth/signin.handler
     runtime: nodejs8.10
@@ -53,7 +62,16 @@ functions:
       - http:
           path: /signin
           method: post
-          cors: true
+          cors:
+            origin: '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
   postConfirm:
     handler: src/auth/postConfirm.handler
     runtime: nodejs8.10
@@ -73,14 +91,15 @@ functions:
           method: get
           authorizer: authorizer
           cors:
-            origins:
-              - '*'
+            origin: '*'
             headers:
               - Content-Type
               - X-Amz-Date
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
   getProject:
     handler: src/projects/getProject.handler
     runtime: nodejs8.10
@@ -93,14 +112,15 @@ functions:
           method: get
           authorizer: authorizer
           cors:
-            origins:
-              - '*'
+            origin: '*'
             headers:
               - Content-Type
               - X-Amz-Date
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
   createProject:
     handler: src/projects/createProject.handler
     runtime: nodejs8.10
@@ -113,14 +133,15 @@ functions:
           method: post
           authorizer: authorizer
           cors:
-            origins:
-              - '*'
+            origin: '*'
             headers:
               - Content-Type
               - X-Amz-Date
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
   updateProject:
     handler: src/projects/updateProject.handler
     runtime: nodejs8.10
@@ -133,14 +154,15 @@ functions:
           method: put
           authorizer: authorizer
           cors:
-            origins:
-              - '*'
+            origin: '*'
             headers:
               - Content-Type
               - X-Amz-Date
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
 # RISKS API
   getAllProjectRisks:
     handler: src/risks/getAllProjectRisks.handler
@@ -154,14 +176,15 @@ functions:
           method: get
           authorizer: authorizer
           cors:
-            origins:
-              - '*'
+            origin: '*'
             headers:
               - Content-Type
               - X-Amz-Date
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
   getProjectRisk:
     handler: src/risks/getProjectRisk.handler
     runtime: nodejs8.10
@@ -174,14 +197,15 @@ functions:
           method: get
           authorizer: authorizer
           cors:
-            origins:
-              - '*'
+            origin: '*'
             headers:
               - Content-Type
               - X-Amz-Date
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
   createProjectRisk:
     handler: src/risks/createProjectRisk.handler
     runtime: nodejs8.10
@@ -194,14 +218,15 @@ functions:
           method: post
           authorizer: authorizer
           cors:
-            origins:
-              - '*'
+            origin: '*'
             headers:
               - Content-Type
               - X-Amz-Date
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
   updateProjectRisk:
     handler: src/risks/updateProjectRisk.handler
     runtime: nodejs8.10
@@ -214,14 +239,15 @@ functions:
           method: put
           authorizer: authorizer
           cors:
-            origins:
-              - '*'
+            origin: '*'
             headers:
               - Content-Type
               - X-Amz-Date
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
   deleteProjectRisk:
     handler: src/risks/deleteProjectRisk.handler
     runtime: nodejs8.10
@@ -234,14 +260,15 @@ functions:
           method: delete
           authorizer: authorizer
           cors:
-            origins:
-              - '*'
+            origin: '*'
             headers:
               - Content-Type
               - X-Amz-Date
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
 # WORKERS API
   getAllWorkers:
     handler: src/workers/getAllWorkers.handler
@@ -255,14 +282,15 @@ functions:
           method: get
           authorizer: authorizer
           cors:
-            origins:
-              - '*'
+            origin: '*'
             headers:
               - Content-Type
               - X-Amz-Date
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
   getWorker:
     handler: src/workers/getWorker.handler
     runtime: nodejs8.10
@@ -275,14 +303,15 @@ functions:
           method: get
           authorizer: authorizer
           cors:
-            origins:
-              - '*'
+            origin: '*'
             headers:
               - Content-Type
               - X-Amz-Date
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
   createWorker:
     handler: src/workers/createWorker.handler
     runtime: nodejs8.10
@@ -295,14 +324,15 @@ functions:
           method: post
           authorizer: authorizer
           cors:
-            origins:
-              - '*'
+            origin: '*'
             headers:
               - Content-Type
               - X-Amz-Date
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
   updateWorker:
     handler: src/workers/updateWorker.handler
     runtime: nodejs8.10
@@ -315,14 +345,15 @@ functions:
           method: put
           authorizer: authorizer
           cors:
-            origins:
-              - '*'
+            origin: '*'
             headers:
               - Content-Type
               - X-Amz-Date
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
   deleteWorker:
     handler: src/workers/deleteWorker.handler
     runtime: nodejs8.10
@@ -335,14 +366,15 @@ functions:
           method: delete
           authorizer: authorizer
           cors:
-            origins:
-              - '*'
+            origin: '*'
             headers:
               - Content-Type
               - X-Amz-Date
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
 # Calendar API
   getCalendar:
     handler: src/calendar/getCalendar.handler
@@ -356,14 +388,15 @@ functions:
           method: get
           authorizer: authorizer
           cors:
-            origins:
-              - '*'
+            origin: '*'
             headers:
               - Content-Type
               - X-Amz-Date
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
   createCalendar:
     handler: src/calendar/createCalendar.handler
     runtime: nodejs8.10
@@ -376,14 +409,15 @@ functions:
           method: post
           authorizer: authorizer
           cors:
-            origins:
-              - '*'
+            origin: '*'
             headers:
               - Content-Type
               - X-Amz-Date
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
   updateCalendar:
     handler: src/calendar/updateCalendar.handler
     runtime: nodejs8.10
@@ -396,14 +430,15 @@ functions:
           method: put
           authorizer: authorizer
           cors:
-            origins:
-              - '*'
+            origin: '*'
             headers:
               - Content-Type
               - X-Amz-Date
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
   getCalendarIntersection:
     handler: src/calendar/getCalendarIntersection.handler
     runtime: nodejs8.10
@@ -416,14 +451,15 @@ functions:
           method: get
           authorizer: authorizer
           cors:
-            origins:
-              - '*'
+            origin: '*'
             headers:
               - Content-Type
               - X-Amz-Date
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
   getCalendarUnique:
     handler: src/calendar/getCalendarUnique.handler
     runtime: nodejs8.10
@@ -436,14 +472,15 @@ functions:
           method: get
           authorizer: authorizer
           cors:
-            origins:
-              - '*'
+            origin: '*'
             headers:
               - Content-Type
               - X-Amz-Date
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
 # TASKS API
   getAllProjectTasks:
     handler: src/tasks/getAllProjectTasks.handler
@@ -457,14 +494,15 @@ functions:
           method: get
           authorizer: authorizer
           cors:
-            origins:
-              - '*'
+            origin: '*'
             headers:
               - Content-Type
               - X-Amz-Date
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
   getProjectTask:
     handler: src/tasks/getProjectTask.handler
     runtime: nodejs8.10
@@ -477,14 +515,15 @@ functions:
           method: get
           authorizer: authorizer
           cors:
-            origins:
-              - '*'
+            origin: '*'
             headers:
               - Content-Type
               - X-Amz-Date
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
   createProjectTask:
     handler: src/tasks/createProjectTask.handler
     runtime: nodejs8.10
@@ -497,14 +536,15 @@ functions:
           method: post
           authorizer: authorizer
           cors:
-            origins:
-              - '*'
+            origin: '*'
             headers:
               - Content-Type
               - X-Amz-Date
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
   updateProjectTask:
     handler: src/tasks/updateProjectTask.handler
     runtime: nodejs8.10
@@ -517,14 +557,15 @@ functions:
           method: put
           authorizer: authorizer
           cors:
-            origins:
-              - '*'
+            origin: '*'
             headers:
               - Content-Type
               - X-Amz-Date
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
   deleteProjectTask:
     handler: src/tasks/deleteProjectTask.handler
     runtime: nodejs8.10
@@ -537,14 +578,15 @@ functions:
           method: delete
           authorizer: authorizer
           cors:
-            origins:
-              - '*'
+            origin: '*'
             headers:
               - Content-Type
               - X-Amz-Date
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
 # Actions API
   getProjectCriticalPath:
     handler: src/actions/getProjectCriticalPath.handler
@@ -558,14 +600,15 @@ functions:
           method: post
           authorizer: authorizer
           cors:
-            origins:
-              - '*'
+            origin: '*'
             headers:
               - Content-Type
               - X-Amz-Date
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
   getProjectCrash:
     handler: src/actions/getProjectCrash.handler
     runtime: nodejs8.10
@@ -578,14 +621,15 @@ functions:
           method: post
           authorizer: authorizer
           cors:
-            origins:
-              - '*'
+            origin: '*'
             headers:
               - Content-Type
               - X-Amz-Date
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
   getProjectStateInCrash:
     handler: src/actions/getProjectStateInCrash.handler
     runtime: nodejs8.10
@@ -598,14 +642,15 @@ functions:
           method: get
           authorizer: authorizer
           cors:
-            origins:
-              - '*'
+            origin: '*'
             headers:
               - Content-Type
               - X-Amz-Date
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
   confirmProjectCrash:
     handler: src/actions/confirmProjectCrash.handler
     runtime: nodejs8.10
@@ -618,14 +663,15 @@ functions:
           method: post
           authorizer: authorizer
           cors:
-            origins:
-              - '*'
+            origin: '*'
             headers:
               - Content-Type
               - X-Amz-Date
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
   prepareProjectTeam:
     handler: src/actions/prepareProjectTeam.handler
     runtime: nodejs8.10
@@ -638,14 +684,15 @@ functions:
           method: post
           authorizer: authorizer
           cors:
-            origins:
-              - '*'
+            origin: '*'
             headers:
               - Content-Type
               - X-Amz-Date
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
   confirmProjectTeam:
     handler: src/actions/confirmProjectTeam.handler
     runtime: nodejs8.10
@@ -658,14 +705,15 @@ functions:
           method: put
           authorizer: authorizer
           cors:
-            origins:
-              - '*'
+            origin: '*'
             headers:
               - Content-Type
               - X-Amz-Date
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
   getProjectTeam:
     handler: src/actions/getProjectTeam.handler
     runtime: nodejs8.10
@@ -678,14 +726,15 @@ functions:
           method: get
           authorizer: authorizer
           cors:
-            origins:
-              - '*'
+            origin: '*'
             headers:
               - Content-Type
               - X-Amz-Date
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
   countProjectDates:
     handler: src/actions/countProjectDates.handler
     runtime: nodejs8.10
@@ -698,14 +747,15 @@ functions:
           method: post
           authorizer: authorizer
           cors:
-            origins:
-              - '*'
+            origin: '*'
             headers:
               - Content-Type
               - X-Amz-Date
               - Authorization
               - X-Api-Key
               - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
 
 resources:
   Resources:

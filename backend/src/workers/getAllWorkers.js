@@ -9,6 +9,10 @@ module.exports.handler = async(event) => {
     if(!result){
       return {
         statusCode : 404,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Credentials': true,
+        },
         body : JSON.stringify({
           message : 'No workers found'
         })
@@ -17,6 +21,10 @@ module.exports.handler = async(event) => {
 
     return {
       statusCode : 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
       body : JSON.stringify(result)
     };
   } catch(dynamoError){
@@ -24,6 +32,10 @@ module.exports.handler = async(event) => {
 
     return {
       statusCode : 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
       body : JSON.stringify({
         message: dynamoError.message
       })

@@ -27,6 +27,10 @@ module.exports.handler = (event) => {
         if(signupError.code === 'UsernameExistsException'){
           return resolve({
             statusCode: 400,
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+              'Access-Control-Allow-Credentials': true,
+            },
             body: JSON.stringify({
               message: 'An account with the given email already exists.'
             })
@@ -34,6 +38,10 @@ module.exports.handler = (event) => {
         } else {
           return resolve({
             statusCode: 500,
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+              'Access-Control-Allow-Credentials': true,
+            },
             body: JSON.stringify({
               message: 'Internal error happen'
             })
@@ -43,6 +51,10 @@ module.exports.handler = (event) => {
 
         return resolve({
           statusCode: 201,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Credentials': true,
+          },
           body: JSON.stringify({
             message: `Successfully signed up. Please check your email for confirmation link`
           })

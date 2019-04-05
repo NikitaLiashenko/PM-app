@@ -1,0 +1,17 @@
+.content-container {
+    display: block;
+    height: 100%;
+}
+
+.login-title {
+    font-size: 28px;
+    font-weight: 500;
+    color: #282d32;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.login-input, .login-form-button{
+    width: 40%;
+}
+

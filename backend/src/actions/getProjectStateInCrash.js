@@ -17,6 +17,10 @@ module.exports.handler = async(event) => {
 
     return {
       statusCode: 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
       body: JSON.stringify({
         message: dynamoError.message
       })
@@ -26,6 +30,10 @@ module.exports.handler = async(event) => {
   if (!project) {
     return {
       statusCode: 404,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
       body: JSON.stringify({
         message: 'No project found'
       })
@@ -35,6 +43,10 @@ module.exports.handler = async(event) => {
   if (!project.crash || !project.crash.length) {
     return {
       statusCode: 404,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
       body: JSON.stringify({
         message: 'No project crash found'
       })
@@ -46,6 +58,10 @@ module.exports.handler = async(event) => {
   if(!crash){
     return {
       statusCode: 404,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
       body: JSON.stringify({
         message: 'No such project crash found'
       })
@@ -76,6 +92,10 @@ module.exports.handler = async(event) => {
 
   return {
     statusCode : 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    },
     body : JSON.stringify(project)
   }
 };

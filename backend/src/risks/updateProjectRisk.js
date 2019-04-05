@@ -22,6 +22,10 @@ module.exports.handler = async(event) => {
     console.error(ajv.errors);
     response = {
       statusCode : 400,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
       body : JSON.stringify({
         message : 'The body received has invalid structure'
       })
@@ -37,6 +41,10 @@ module.exports.handler = async(event) => {
     if(!project) {
       return {
         statusCode : 404,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Credentials': true,
+        },
         body : JSON.stringify({
           message : 'No such project found'
         })
@@ -48,6 +56,10 @@ module.exports.handler = async(event) => {
 
     return {
       statusCode : 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
       body : dynamoError.message
     };
   }
@@ -57,6 +69,10 @@ module.exports.handler = async(event) => {
   if(!project.risks){
     return {
       statusCode : 404,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
       body : JSON.stringify({
         message : 'No risks for this project found'
       })
@@ -68,6 +84,10 @@ module.exports.handler = async(event) => {
   if(riskIndex < 0){
     return {
       statusCode : 404,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
       body : JSON.stringify({
         message : 'No such risk found for this project'
       })
@@ -89,6 +109,10 @@ module.exports.handler = async(event) => {
 
     response = {
       statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
       body: JSON.stringify(_.omit(updatedObject, ['username']))
     };
   } catch (dynamoError) {
@@ -96,6 +120,10 @@ module.exports.handler = async(event) => {
 
     response = {
       statusCode: 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
       body: JSON.stringify(
         {
           message: dynamoError.message

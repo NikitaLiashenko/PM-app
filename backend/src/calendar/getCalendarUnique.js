@@ -8,6 +8,10 @@ module.exports.handler = async(event) => {
   if(!(query.locations && query.locations.length > 1)){
     return {
       statusCode : 400,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
       body : JSON.stringify({
         message : 'Multiple locations should be provided'
       })
@@ -30,6 +34,10 @@ module.exports.handler = async(event) => {
 
     return {
       statusCode : 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
       body : JSON.stringify({
         message: dynamoError.message
       })
@@ -42,6 +50,10 @@ module.exports.handler = async(event) => {
 
   return {
     statusCode : 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    },
     body : JSON.stringify(unique)
   };
 

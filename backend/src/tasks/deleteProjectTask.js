@@ -18,6 +18,10 @@ module.exports.handler = async(event) => {
     if(!project) {
       return {
         statusCode : 404,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Credentials': true,
+        },
         body : JSON.stringify({
           message : 'No such project found'
         })
@@ -29,6 +33,10 @@ module.exports.handler = async(event) => {
 
     return {
       statusCode : 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
       body : JSON.stringify({
         message: dynamoError.message
       })
@@ -40,6 +48,10 @@ module.exports.handler = async(event) => {
   if(!project.tasks){
     return {
       statusCode : 404,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
       body : JSON.stringify({
         message : 'No tasks for this project found'
       })
@@ -51,6 +63,10 @@ module.exports.handler = async(event) => {
   if(taskIndex < 0){
     return {
       statusCode : 404,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
       body : JSON.stringify({
         message : 'No such task found for this project'
       })
@@ -72,6 +88,10 @@ module.exports.handler = async(event) => {
 
     response = {
       statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
       body: JSON.stringify(_.omit(updatedObject, ['username']))
     };
   } catch (dynamoError) {
@@ -79,6 +99,10 @@ module.exports.handler = async(event) => {
 
     response = {
       statusCode: 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
       body: JSON.stringify(
         {
           message: dynamoError.message

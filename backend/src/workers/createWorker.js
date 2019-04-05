@@ -13,6 +13,10 @@ module.exports.handler = async(event) => {
   if(user.role !== 'Admin'){
     return {
       statusCode : 403,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
       body : JSON.stringify({
         message : 'You are not allowed to do this action'
       })
@@ -28,6 +32,10 @@ module.exports.handler = async(event) => {
     console.error(ajv.errors);
     response = {
       statusCode : 400,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
       body : JSON.stringify({
         message : 'The body received has invalid structure'
       })
@@ -49,6 +57,10 @@ module.exports.handler = async(event) => {
 
     response = {
       statusCode : 201,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
       body : JSON.stringify({
         message : 'Worker was successfully created'
       })
@@ -59,6 +71,10 @@ module.exports.handler = async(event) => {
 
     response = {
       statusCode : 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
       body : JSON.stringify({
         message : dynamoError.message
       })

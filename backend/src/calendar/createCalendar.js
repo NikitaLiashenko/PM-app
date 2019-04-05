@@ -14,6 +14,10 @@ module.exports.handler = async(event) => {
   if(user.role !== 'Admin'){
     return {
       statusCode : 403,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
       body : JSON.stringify({
         message : 'You are not allowed to do this action'
       })
@@ -27,6 +31,10 @@ module.exports.handler = async(event) => {
     console.error(ajv.errors);
     return {
       statusCode : 400,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
       body : JSON.stringify({
         message : 'The body received has invalid structure'
       })
@@ -39,6 +47,10 @@ module.exports.handler = async(event) => {
     if(result){
       return {
         statusCode : 400,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Credentials': true,
+        },
         body : JSON.stringify({
           message : 'Such calendar already exists'
         })
@@ -49,6 +61,10 @@ module.exports.handler = async(event) => {
 
     return {
       statusCode : 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
       body : JSON.stringify({
         message: dynamoError.message
       })
@@ -67,6 +83,10 @@ module.exports.handler = async(event) => {
 
     return {
       statusCode : 201,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
       body : JSON.stringify({
         message : 'Calendar was successfully created'
       })
@@ -77,6 +97,10 @@ module.exports.handler = async(event) => {
 
     return {
       statusCode : 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
       body : JSON.stringify({
         message : dynamoError.message
       })

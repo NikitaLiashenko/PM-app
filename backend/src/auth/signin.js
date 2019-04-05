@@ -38,6 +38,10 @@ module.exports.handler = (event) => {
           .then(user => {
             return resolve({
               statusCode : 200,
+              headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Credentials': true,
+              },
               body : JSON.stringify({
                 token : result.accessToken.jwtToken,
                 role : user.role
@@ -48,23 +52,25 @@ module.exports.handler = (event) => {
             console.error(error);
             return reject({
               statusCode : 500,
+              headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Credentials': true,
+              },
               body : JSON.stringify({
                 message : `Error occurred during signing in`
               })
             })
           });
-        // return resolve({
-        //   statusCode : 200,
-        //   body : JSON.stringify({
-        //     token : result.accessToken.jwtToken
-        //   })
-        // })
       },
       onFailure : signinError => {
         console.error(signinError);
 
         return reject({
           statusCode : 500,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Credentials': true,
+          },
           body : JSON.stringify({
             message : `Error occurred during signing in`
           })
