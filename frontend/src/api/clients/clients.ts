@@ -1,7 +1,7 @@
 import {AxiosError, AxiosRequestConfig, AxiosResponse} from "axios";
 import createClient from './clientFactory';
 import storage, {TOKEN} from "@/stores/storage";
-console.log(process.env);
+
 const baseAPIUrl = process.env.REACT_APP_BASE_API_URL || '';
 
 const authClient = createClient({

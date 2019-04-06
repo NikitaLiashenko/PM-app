@@ -1,4 +1,4 @@
-.login-title {
+.register-title {
     font-size: 28px;
     font-weight: 500;
     color: #282d32;
@@ -6,7 +6,7 @@
     margin-bottom: 15px;
 }
 
-.login-input, .login-form-button{
+.register-input, .register-form-button{
     width: 40%;
 }
 

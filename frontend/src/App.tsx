@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import Main from '@/routes/Main/Main';
 import NotFound from '@/routes/NotFound/NotFound';
 import Login from '@/routes/Login/Login';
+import Register from '@/routes/Register/Register';
 // import RootRedirect from '@/routes/RootRedirect';
 import { BrowserRouter, Route, Switch} from 'react-router-dom';
 // import PrivateRoute from '@/routes/PrivateRoute';
@@ -16,6 +17,7 @@ class App extends Component {
             <Switch>
               <Route exact={true} path={links.root} component={Main}/>
               <Route exact={true} path={links.signin} component={Login}/>
+              <Route exact={true} path={links.signup} component={Register}/>
               <Route exact={true} path={links.notFound} component={NotFound}/>
             </Switch>
           </BrowserRouter>

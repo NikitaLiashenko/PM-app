@@ -1,7 +1,7 @@
 import links from '@/routes/urls';
 import { AuthStore } from '@/stores';
 import actions from '@/actions';
-import {Form, Row, Col, Button, Icon, Input,} from 'antd';
+import {Form, Row, Col, Button, Icon, Input, notification} from 'antd';
 import {FormComponentProps} from "antd/lib/form/Form";
 import {inject, observer} from 'mobx-react';
 import React, {Component, SyntheticEvent} from 'react';
@@ -11,7 +11,6 @@ import './Login.css';
 type Props = {
   authStore : AuthStore
 };
-
 
 @inject('authStore')
 @observer
@@ -47,9 +46,19 @@ class Login extends Component<Props & RouteComponentProps & FormComponentProps> 
     });
   };
 
+  componentDidMount(): void {
+    if(this.props.location.state && this.props.location.state.message){
+      notification.success({
+        message: 'Verify email',
+        description: 'Please click on the link that has just been sent to your email account to verify your email and finish the registration process.'
+      });
+    }
+  }
+
   render(){
     const { getFieldDecorator } = this.props.form;
     const {isLoading} = this.props.authStore;
+
     return(
       <Row className="full-height">
         <Col span={24}>
@@ -68,7 +77,7 @@ class Login extends Component<Props & RouteComponentProps & FormComponentProps> 
                           }
                         ]
                       })(
-                        <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} className="login-input" placeholder="Username" />
+                        <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} className="login-input" placeholder="Email" />
                       )}
                     </Form.Item>
                     <Form.Item>
