@@ -12,7 +12,7 @@ class Main extends Component {
             <div className="content-background">
               <Row type="flex" justify="space-around" align="middle" className="full-height">
                 <Col span={12}>
-                  <div className="home-center">
+                  <div className="center">
                     <h1 className="home-title">Join the ProPlanner</h1>
                     <p className="home-description">next-generation project management application</p>
                     <Button className="getting-started-button"><Link to="/signin">Get started</Link></Button>

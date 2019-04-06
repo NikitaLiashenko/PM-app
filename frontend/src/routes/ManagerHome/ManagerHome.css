@@ -1,0 +1,48 @@
+.trigger {
+    font-size: 18px;
+    line-height: 64px;
+    padding: 0 24px;
+    cursor: pointer;
+    transition: color .3s;
+}
+
+.trigger:hover {
+    color: #1890ff;
+}
+
+.logo {
+    height: 32px;
+    margin: 16px;
+    font-size : 20px;
+    color: white;
+}
+
+.title {
+    height: 32px;
+    margin: 0 20px 0 20px;
+    font-size : 20px;
+}
+
+.menu-text{
+    font-size: 18px;
+}
+
+.projects-title {
+    font-size: 20px;
+    margin: 5px;
+}
+
+.project-card {
+    height: 180px;
+    width: 180px;
+    border-radius: 25px;
+    margin: 10px;
+}
+
+.project-card-title {
+    font-size: 16px;
+}
+
+.new-project-card{
+    border: 2px dashed;
+}

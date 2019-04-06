@@ -1,7 +1,7 @@
 import links from '@/routes/urls';
 import {AuthStore} from '@/stores';
 import actions from '@/actions';
-import {Form, Row, Col, Button, Icon, Input,} from 'antd';
+import {Form, Row, Col, Button, Icon, Input, Spin,} from 'antd';
 import {FormComponentProps} from "antd/lib/form/Form";
 import {inject, observer} from 'mobx-react';
 import React, {Component, SyntheticEvent} from 'react';
@@ -91,7 +91,7 @@ class Register extends Component<Props & RouteComponentProps & FormComponentProp
           <div className="content-container">
             <Row type="flex" justify="space-around" align="middle" className="full-height">
               <Col span={12}>
-                <div className="home-center">
+                <div className="center">
                   <div className="register-title">Register</div>
                   <Form onSubmit={this.register}>
                     <Form.Item>
@@ -137,7 +137,7 @@ class Register extends Component<Props & RouteComponentProps & FormComponentProp
                       )}
                     </Form.Item>
                     <Form.Item>
-                      <Button type="primary" disabled={isLoading} htmlType="submit" className="register-form-button" onBlur={this.handleConfirmBlur}>
+                      <Button type="primary" loading={isLoading} icon="arrow-up" htmlType="submit" className="register-form-button" onBlur={this.handleConfirmBlur}>
                         Register
                       </Button>
                     </Form.Item>

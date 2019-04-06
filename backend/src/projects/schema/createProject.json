@@ -5,6 +5,11 @@
   "description": "Schema for project creation",
   "type": "object",
   "properties": {
+    "title" : {
+      "type": "string",
+      "description" : "Project title",
+      "minLength": 1
+    },
     "description" : {
       "type": "string",
       "description" : "Project description",
@@ -50,6 +55,10 @@
       "type": "number",
       "description": "Money already payed for project",
       "minimum" : 0
+    },
+    "ui" : {
+      "type": "object",
+      "description": "Properties of ui"
     }
   }
 }

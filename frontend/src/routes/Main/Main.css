@@ -17,13 +17,6 @@
     font-size: 18px;
 }
 
-.home-center {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    text-align: center;
-}
-
 .getting-started-button{
     font-size: 18px;
     color: white;

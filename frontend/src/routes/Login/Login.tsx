@@ -1,7 +1,7 @@
 import links from '@/routes/urls';
 import { AuthStore } from '@/stores';
 import actions from '@/actions';
-import {Form, Row, Col, Button, Icon, Input, notification} from 'antd';
+import {Form, Row, Col, Button, Icon, Input, notification, Spin} from 'antd';
 import {FormComponentProps} from "antd/lib/form/Form";
 import {inject, observer} from 'mobx-react';
 import React, {Component, SyntheticEvent} from 'react';
@@ -65,7 +65,7 @@ class Login extends Component<Props & RouteComponentProps & FormComponentProps> 
           <div className="content-container">
             <Row type="flex" justify="space-around" align="middle" className="full-height">
               <Col span={12}>
-                <div className="home-center">
+                <div className="center">
                   <div className="login-title">Login</div>
                   <Form onSubmit={this.login}>
                     <Form.Item>
@@ -93,7 +93,7 @@ class Login extends Component<Props & RouteComponentProps & FormComponentProps> 
                       )}
                     </Form.Item>
                     <Form.Item>
-                      <Button type="primary" disabled={isLoading} htmlType="submit" className="login-form-button">
+                      <Button type="primary" loading={isLoading} icon="login" htmlType="submit" className="login-form-button">
                         Log in
                       </Button>
                       <br/>
