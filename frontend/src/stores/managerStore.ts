@@ -23,7 +23,24 @@ class ManagerStore {
     });
 
     return Promise.resolve();
-  }
+  };
+
+  @action
+  createNewProject = async(project : Project) => {
+    let response : any;
+
+    try{
+      response = await ProjectService.createProject(project);
+    } catch(responseError){
+      return Promise.reject(responseError.message);
+    }
+
+    runInAction(() => {
+      this.projectsList.push(response.project);
+    });
+
+    return Promise.resolve(response.message);
+  };
 }
 
 export default ManagerStore;

@@ -1,7 +1,7 @@
 import {authClient, apiClient} from '@/api/clients/clients';
 
 export type Project = {
-  projectId : string,
+  projectId? : string,
   title? : string,
   description? : string,
   client? : string,
@@ -28,6 +28,13 @@ const getAllProject = async () : Promise<Project> => {
   return response.data;
 };
 
+const createProject = async(project : Project) : Promise<object> => {
+  const response = await apiClient.post('/project', project);
+
+  return response.data;
+};
+
 export default {
-  getAllProject
+  getAllProject,
+  createProject
 };

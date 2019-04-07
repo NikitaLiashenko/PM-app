@@ -17,3 +17,7 @@
     flex-direction: column;
     text-align: center;
 }
+
+.full-width {
+    width : 100%;
+}

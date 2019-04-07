@@ -50,7 +50,8 @@ module.exports.handler = async(event) => {
         'Access-Control-Allow-Credentials': true,
       },
       body : JSON.stringify({
-        message : 'Project was successfully created'
+        message : 'Project was successfully created',
+        project : projectData
       })
     };
 
