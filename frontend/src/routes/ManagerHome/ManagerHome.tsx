@@ -35,8 +35,7 @@ type Props = {
 
 type State = {
   modalVisible : boolean,
-  project : object,
-  modalOkEnabled : boolean
+  confirmLoading : boolean
 };
 
 @inject('managerStore')
@@ -45,8 +44,7 @@ class ManagerHome extends Component<Props & RouteComponentProps & FormComponentP
 
   state = {
     modalVisible : false,
-    project : {},
-    modalOkEnabled : false
+    confirmLoading: false,
   };
 
   componentWillMount(): void {
@@ -56,14 +54,41 @@ class ManagerHome extends Component<Props & RouteComponentProps & FormComponentP
     });
   }
 
-  handleModalSubmit(){
+  handleModalSubmit(e : SyntheticEvent){
+    e.preventDefault();
 
+    this.props.form.validateFields((err, values) => {
+      if(!err){
+        this.setState({
+          confirmLoading : true
+        });
+        actions.createNewProject({
+          title : values.title,
+          description : values.description,
+          startDate : values.startDate.format('YYYY-MM-DD'),
+          overheadCostPerDay : values.overheadCost,
+          ui : {
+            color : values.color.hex
+          }
+        })
+          .then(() => {
+            this.setState({
+              confirmLoading : false,
+              modalVisible : false
+            });
+          })
+          .catch((actionError) => {
+            console.error(actionError);
+          });
+      } else {
+        console.error(err);
+      }
+    });
   }
 
   handleModalCancel(){
     this.props.form.resetFields();
     this.setState({
-      project : {},
       modalVisible : false
     })
   }
@@ -130,7 +155,7 @@ class ManagerHome extends Component<Props & RouteComponentProps & FormComponentP
                                    }} />
                           </Row>
                           <Divider />
-                          <Row type="flex" justify="start" align="top">
+                          <Row type="flex" justify="space-between" align="top">
                             {this.props.managerStore.projectsList.length ?
                               this.props.managerStore.projectsList.map((element, i) =>
                                 <div key={i}>
@@ -189,9 +214,9 @@ class ManagerHome extends Component<Props & RouteComponentProps & FormComponentP
           title="Create project"
           centered
           visible={this.state.modalVisible}
-          onOk={() => this.handleModalSubmit()}
+          onOk={(e) => this.handleModalSubmit(e)}
           onCancel={() => this.handleModalCancel()}
-          okButtonProps={{ disabled: this.state.modalOkEnabled }}
+          confirmLoading={this.state.confirmLoading}
           okText="Create"
         >
           <Form layout="vertical">
@@ -213,7 +238,7 @@ class ManagerHome extends Component<Props & RouteComponentProps & FormComponentP
             <Form.Item
               label="Project start date"
             >
-              {getFieldDecorator('date-picker', {
+              {getFieldDecorator('startDate', {
                 rules: [
                   {
                     // type: 'object',
@@ -246,7 +271,7 @@ class ManagerHome extends Component<Props & RouteComponentProps & FormComponentP
                   }
                 ],
               })(
-                <CirclePicker />
+                <CirclePicker/>
               )}
             </Form.Item>
           </Form>
