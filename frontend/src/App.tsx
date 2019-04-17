@@ -4,6 +4,7 @@ import NotFound from '@/routes/NotFound/NotFound';
 import Login from '@/routes/Login/Login';
 import Register from '@/routes/Register/Register';
 import ManagerHome from '@/routes/ManagerHome/ManagerHome';
+import Project from '@/routes/Project/Project';
 // import RootRedirect from '@/routes/RootRedirect';
 import { BrowserRouter, Route, Switch} from 'react-router-dom';
 import PrivateRoute from '@/routes/PrivateRoute';
@@ -21,7 +22,9 @@ class App extends Component {
               <Route exact={true} path={links.signup} component={Register}/>
 
               {/*<PrivateRoute role="Manager" component={ManagerHome}/>*/}
+              {/*<PrivateRoute role="Manager" component={Project}/>*/}
               <Route exact={true} path={links.managerHome} component={ManagerHome}/>
+              <Route exact={true} path={links.project} component={Project}/>
               <Route exact={true} path={links.notFound} component={NotFound}/>
             </Switch>
           </BrowserRouter>

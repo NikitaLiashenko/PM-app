@@ -73,6 +73,18 @@ module.exports.handler = async(event) => {
     };
   }
 
+  const predecessors = project.tasks[taskId].predecessor;
+
+  project.tasks.forEach(task => {
+    if(task.predecessor.includes(taskId)){
+      const predecessorIndex = task.predecessor.findIndex(predecessor => predecessor === taskId);
+
+      task.predecessor.splice(predecessorIndex, 1);
+
+      task.predecessor = task.predecessor.concat(predecessors);
+    }
+  });
+
   project.tasks.splice(taskIndex, 1);
 
   const {updateString, expressionAttributeValues} = utils.prepareUpdateStringAndObject(project);

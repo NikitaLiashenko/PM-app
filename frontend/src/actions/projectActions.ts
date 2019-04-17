@@ -1,4 +1,5 @@
 import stores from '@/stores';
+import {Project} from "@/services/projectService";
 
 const getAllProjects = () => {
   return stores.managerStore.getAllUserProjects();
@@ -8,7 +9,27 @@ const createNewProject = (project : object) => {
   return stores.managerStore.createNewProject(project);
 };
 
+const getProject = (projectId : string) => {
+  return stores.managerStore.getProject(projectId);
+};
+
+const updateProject = (project : Project, projectId : string) => {
+  return stores.managerStore.updateProject(project, projectId);
+};
+
+const cleanProject = () => {
+  return stores.managerStore.cleanProject();
+};
+
+const cleanProjectsList = () => {
+  return stores.managerStore.cleanProjectsList();
+};
+
 export default {
   getAllProjects,
-  createNewProject
+  createNewProject,
+  getProject,
+  updateProject,
+  cleanProject,
+  cleanProjectsList
 }

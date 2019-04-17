@@ -34,7 +34,21 @@ const createProject = async(project : Project) : Promise<object> => {
   return response.data;
 };
 
+const getProject = async(projectId : string) : Promise<Project> => {
+  const response = await apiClient.get(`/project/${projectId}`);
+
+  return response.data;
+};
+
+const updateProject = async (project : Project, projectId : string) : Promise<Project> => {
+  const response = await apiClient.put(`/project/${projectId}`, project);
+
+  return response.data;
+};
+
 export default {
   getAllProject,
-  createProject
+  createProject,
+  getProject,
+  updateProject
 };

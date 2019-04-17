@@ -11,7 +11,8 @@
     "estimateMax",
     "taskCost",
     "crashCost",
-    "taskType"
+    "taskType",
+    "progress"
   ],
   "properties": {
     "summary" : {
@@ -113,6 +114,12 @@
       "type": "string",
       "description": "Task which should be done before this starts",
       "minLength": 1
+    },
+    "progress" : {
+      "type" : "number",
+      "description": "Task progress",
+      "minimum" : 0,
+      "maximum" : 100
     }
   }
 }

@@ -99,6 +99,10 @@ class ManagerHome extends Component<Props & RouteComponentProps & FormComponentP
     })
   }
 
+  handleOpenProject(projectId : any) {
+    this.props.history.push(`/project/${projectId}`, {projectId});
+  };
+
   render(){
     const { getFieldDecorator } = this.props.form;
     return(
@@ -159,10 +163,14 @@ class ManagerHome extends Component<Props & RouteComponentProps & FormComponentP
                             {this.props.managerStore.projectsList.length ?
                               this.props.managerStore.projectsList.map((element, i) =>
                                 <div key={i}>
-                                  <Card className="project-card" bodyStyle={{
-                                    height : '180px',
-                                    cursor : 'pointer'
-                                  }} style={{ backgroundColor : element.ui.color}}>
+                                  <Card className="project-card"
+                                        bodyStyle={{
+                                          height : '180px',
+                                          cursor : 'pointer'
+                                        }}
+                                        style={{ backgroundColor : element.ui.color}}
+                                        onClick={() => this.handleOpenProject(element.projectId)}
+                                  >
                                     <Row type="flex" justify="space-around" align="middle" style={{height : '100%'}}>
                                       <Col span={12}>
                                       <div className="center">
