@@ -12,6 +12,7 @@
     "taskCost",
     "crashCost",
     "taskType",
+    "predecessor",
     "progress"
   ],
   "properties": {
@@ -111,9 +112,13 @@
       "enum" : ["Ready for dev", "In development", "Review", "Done"]
     },
     "predecessor" : {
-      "type": "string",
-      "description": "Task which should be done before this starts",
-      "minLength": 1
+      "type": "array",
+      "description": "Task predecessors",
+      "items" : {
+        "type": "string",
+        "description": "Task which should be done before this starts",
+        "minLength": 1
+      }
     },
     "progress" : {
       "type" : "number",

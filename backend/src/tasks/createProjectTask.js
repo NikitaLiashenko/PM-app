@@ -99,7 +99,9 @@ module.exports.handler = async(event) => {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Credentials': true,
       },
-      body: JSON.stringify(_.omit(updatedObject, ['username']))
+      body: JSON.stringify({
+        taskId : task.taskId
+      })
     };
   } catch (dynamoError) {
     console.error(dynamoError.message);

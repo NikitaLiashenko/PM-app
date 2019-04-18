@@ -45,7 +45,28 @@ const getProjectTask = async(projectId : string, taskId : string) : Promise<Task
   return response.data;
 };
 
+const createProjectTask = async(projectId : string, task : Task) : Promise<object> => {
+  const response = await apiClient.post(`/project/${projectId}/task`, task);
+
+  return response.data;
+};
+
+const updateProjectTask = async(projectId : string, taskId : string, task : Task) : Promise<object> => {
+  const response = await apiClient.put(`/project/${projectId}/task/${taskId}`, task);
+
+  return response.data;
+};
+
+const deleteProjectTask = async(projectId : string, taskId : string) : Promise<object> => {
+  const response = await apiClient.delete(`/project/${projectId}/task/${taskId}`);
+
+  return response.data;
+};
+
 export default {
   getAllProjectTasks,
-  getProjectTask
+  getProjectTask,
+  createProjectTask,
+  updateProjectTask,
+  deleteProjectTask
 };

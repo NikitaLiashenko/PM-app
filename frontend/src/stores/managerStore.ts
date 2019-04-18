@@ -131,6 +131,49 @@ class ManagerStore {
   };
 
   @action
+  createTask = async (task : Task) => {
+    let response : any;
+
+    try {
+      response = await TaskService.createProjectTask(this.project.projectId as string, task);
+    } catch(responseError){
+      return Promise.reject(responseError.message);
+    }
+
+    return Promise.resolve(response);
+  };
+
+  @action
+  updateTask = async (task : Task) => {
+    let response : any;
+
+    try {
+      response = await TaskService.updateProjectTask(this.project.projectId as string, this.task.taskId as string, task);
+    } catch(responseError){
+      return Promise.reject(responseError.message);
+    }
+
+    return Promise.resolve();
+  };
+
+  @action
+  deleteTask = async () => {
+    let response : any;
+
+    try{
+      response = await TaskService.deleteProjectTask(this.project.projectId as string, this.task.taskId as string);
+    } catch(responseError){
+      return Promise.reject(responseError.message);
+    }
+
+    runInAction(() => {
+      this.task = {};
+    });
+
+    return Promise.resolve();
+  };
+
+  @action
   cleanTasks = () => {
     this.tasks = [];
   };
