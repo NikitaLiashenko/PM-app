@@ -30,7 +30,7 @@ module.exports.handler = async(event) => {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Credentials': true,
       },
-      body: JSON.stringify(_.omit(project, ['username', 'risks']))
+      body: JSON.stringify(_.omit(project, ['username']))
     };
 
   } catch(dynamoError){

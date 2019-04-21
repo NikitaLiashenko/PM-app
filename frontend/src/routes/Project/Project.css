@@ -7,3 +7,28 @@
 .task:hover{
     background-color: #f6f8f9;
 }
+
+.grey-icon {
+    font-size: 100px;
+    color: #F2F3F5;
+    cursor: pointer;
+}
+
+.green-icon {
+    font-size: 100px;
+    color: #52c41a;
+    cursor: pointer;
+}
+
+.weekend {
+    background: #f4f7f4 !important;
+}
+
+.critical {
+    background-color: #e63030;
+    border-color: rgb(157, 58, 58);
+}
+
+.critical > .gantt_task_progress_wrapper > .gantt_task_progress {
+    background-color: rgba(0,0,0,.4);
+}

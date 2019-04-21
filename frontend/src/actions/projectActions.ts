@@ -25,11 +25,21 @@ const cleanProjectsList = () => {
   return stores.managerStore.cleanProjectsList();
 };
 
+const countCriticalPath = () => {
+  return stores.managerStore.countCriticalPath();
+};
+
+const countProjectDates = () => {
+  return stores.managerStore.countProjectDates();
+};
+
 export default {
   getAllProjects,
   createNewProject,
   getProject,
   updateProject,
   cleanProject,
-  cleanProjectsList
+  cleanProjectsList,
+  countCriticalPath,
+  countProjectDates
 }

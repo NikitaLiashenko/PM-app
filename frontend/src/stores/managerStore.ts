@@ -1,6 +1,7 @@
 import {action ,observable, runInAction} from "mobx";
 import ProjectService, {Project} from '@/services/projectService';
 import TaskService, {Task} from '@/services/taskService';
+import WorkerService, {Worker} from '@/services/workerService';
 
 class ManagerStore {
   @observable
@@ -14,6 +15,9 @@ class ManagerStore {
 
   @observable
   task : Task = {};
+
+  @observable
+  team : Array<Worker> = [];
 
   @action
   getAllUserProjects = async() => {
@@ -93,6 +97,8 @@ class ManagerStore {
   @action
   cleanProject = () => {
     this.project = {};
+    this.tasks = [];
+    this.team = [];
   };
 
   @action
@@ -181,6 +187,62 @@ class ManagerStore {
   @action
   cleanTask = () => {
     this.task = {};
+  };
+
+  @action
+  getProjectTeam = async() => {
+    let response : any;
+
+    try{
+      response = await WorkerService.getProjectTeam(this.project.projectId as string);
+    } catch(responseError){
+      return Promise.reject(responseError.message);
+    }
+
+    runInAction(() => {
+      this.team = response;
+    });
+
+    return Promise.resolve();
+  };
+
+  @action
+  cleanProjectTeam = () => {
+    this.team = [];
+  };
+
+  @action
+  countCriticalPath = async() => {
+    let response : any;
+
+    try{
+      response = await ProjectService.countCriticalPath(this.project.projectId as string);
+    } catch(responseError){
+      return Promise.reject(responseError.message);
+    }
+
+    return Promise.resolve();
+  };
+
+  @action
+  countProjectDates = async() => {
+    let response : any;
+
+    const locations : Array<string> = [];
+
+    this.team.forEach(worker => {
+      if(!locations.includes(worker.location as string)){
+        locations.push(worker.location as string);
+      }
+    });
+
+    try{
+      response = await ProjectService.countProjectDates(this.project.projectId as string, locations);
+    } catch(responseError){
+      return Promise.reject(responseError.message);
+    }
+
+    return Promise.resolve();
   };
 }
 

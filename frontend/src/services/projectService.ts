@@ -1,4 +1,4 @@
-import {authClient, apiClient} from '@/api/clients/clients';
+import {apiClient} from '@/api/clients/clients';
 
 export type Project = {
   projectId? : string,
@@ -46,9 +46,23 @@ const updateProject = async (project : Project, projectId : string) : Promise<Pr
   return response.data;
 };
 
+const countCriticalPath = async(projectId : string) : Promise<object> => {
+  const response = await apiClient.post(`/project/${projectId}/criticalPath`);
+
+  return response.data;
+};
+
+const countProjectDates = async(projectId : string, locations : Array<string>) : Promise<object> => {
+  const response = await apiClient.post(`/project/${projectId}/dates`, {locations});
+
+  return response.data;
+};
+
 export default {
   getAllProject,
   createProject,
   getProject,
-  updateProject
+  updateProject,
+  countCriticalPath,
+  countProjectDates
 };

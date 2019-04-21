@@ -13,10 +13,13 @@ import {
   Form,
   Input,
   InputNumber,
-  Row
+  Row,
+  Icon,
+  Typography
 } from 'antd';
 
 const {TextArea} = Input;
+const {Title} = Typography;
 
 type Props = {
   managerStore : ManagerStore,
@@ -24,13 +27,21 @@ type Props = {
 };
 
 type State = {
-  isUpdating : boolean
+  isUpdating : boolean,
+  isCriticalPathCounted : boolean,
+  isCriticalPathLoading : boolean,
+  areProjectDatesCounted : boolean,
+  areProjectDatesLoading : boolean
 };
 
 @observer
 class MainInfo extends Component<Props & FormComponentProps, State> {
   state = {
-    isUpdating : false
+    isUpdating : false,
+    isCriticalPathCounted : false,
+    isCriticalPathLoading : false,
+    areProjectDatesCounted : false,
+    areProjectDatesLoading : false
   };
 
   componentWillMount(): void {
@@ -69,6 +80,46 @@ class MainInfo extends Component<Props & FormComponentProps, State> {
         }
       });
     }
+  }
+
+  handleCountCriticalPath(e : SyntheticEvent){
+    e.preventDefault();
+
+    this.setState({
+      isCriticalPathLoading : true
+    });
+    actions.countCriticalPath()
+      .then(() => {
+        this.setState({
+          isCriticalPathCounted : true,
+          isCriticalPathLoading : false
+        })
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
+
+  handleCountProjectDates(e : SyntheticEvent){
+    e.preventDefault();
+
+    this.setState({
+      areProjectDatesLoading : true
+    });
+    actions.getProjectTeam()
+      .then(() => {
+        return actions.countProjectDates();
+      })
+      .then(() => {
+        this.setState({
+          areProjectDatesCounted : true,
+          areProjectDatesLoading : false
+        });
+        return actions.getProject(this.props.projectId as string);
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }
 
   render(){
@@ -158,6 +209,26 @@ class MainInfo extends Component<Props & FormComponentProps, State> {
               </Row>
             </Form.Item>
           </Form>
+        </Col>
+        <Col span={12}>
+          <div className="full-width">
+            <div className="content-container">
+              <Row type="flex" justify="center" align="middle">
+                <Icon type={this.state.isCriticalPathLoading ? "loading" : "check"}
+                      className={this.state.isCriticalPathCounted ? 'green-icon' : 'grey-icon'}
+                      onClick={this.handleCountCriticalPath.bind(this)}
+                ></Icon>
+                <Title level={1} style={{margin: 'auto 0'}}>Critical path</Title>
+              </Row>
+              <Row type="flex" justify="center" align="middle">
+                <Icon type={this.state.areProjectDatesLoading ? "loading" : "check"}
+                      className={this.state.areProjectDatesCounted ? 'green-icon' : 'grey-icon'}
+                      onClick={this.handleCountProjectDates.bind(this)}
+                ></Icon>
+                <Title level={1} style={{margin: 'auto 0'}}>Project dates</Title>
+              </Row>
+            </div>
+          </div>
         </Col>
       </Row>
     );
