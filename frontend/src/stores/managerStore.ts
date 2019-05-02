@@ -3,6 +3,7 @@ import ProjectService, {Project} from '@/services/projectService';
 import TaskService, {Task} from '@/services/taskService';
 import WorkerService, {Worker} from '@/services/workerService';
 import RiskService, {Risk} from '@/services/riskService';
+import CalendarService, {Calendar} from '@/services/calendarService';
 
 class ManagerStore {
   @observable
@@ -25,6 +26,12 @@ class ManagerStore {
 
   @observable
   risk : Risk = {};
+
+  @observable
+  calendars : Array<Calendar> = [];
+
+  @observable
+  calendar : Calendar = { holidays : []};
 
   @action
   getAllUserProjects = async() => {
@@ -334,6 +341,94 @@ class ManagerStore {
   @action
   cleanRisk = () => {
     this.risk = {};
+  };
+
+  @action
+  getAllCalendars = async() => {
+    let response : any;
+
+    try {
+      response = await CalendarService.getAllCalendars();
+    } catch(responseError){
+      return Promise.reject(responseError.message);
+    }
+
+    runInAction(() => {
+      this.calendars = response;
+    });
+
+
+    return Promise.resolve();
+  };
+
+  @action
+  getLocationCalendar = async(location : string) => {
+    let response : any;
+
+    try {
+      response = await CalendarService.getLocationCalendar(location);
+    } catch(responseError){
+      return Promise.reject(responseError.message);
+    }
+
+    runInAction(() => {
+      this.calendar = response;
+    });
+
+    return Promise.resolve();
+  };
+
+  @action
+  createLocationCalendar = async(location : string, calendar : Calendar) => {
+    let response : any;
+
+    try {
+      response = await CalendarService.createLocationCalendar(location, calendar);
+    } catch (responseError) {
+      return Promise.reject(responseError.message);
+    }
+
+    return Promise.resolve();
+  };
+
+  @action
+  updateLocationCalendar = async(location : string, calendar : Calendar) => {
+    let response : any;
+
+    try {
+      response = await CalendarService.updateLocationCalendar(location, calendar);
+    } catch (responseError){
+      return Promise.reject(responseError.message);
+    }
+
+    return Promise.resolve();
+  };
+
+  @action
+  getUniqueHolidaysBetweenCalendars = async(locations : Array<string>) => {
+    let response : any;
+
+    try {
+      response = await CalendarService.getUniqueHolidaysBetweenCalendars(locations);
+    } catch(responseError){
+      return Promise.reject(responseError.message);
+    }
+
+    runInAction(() => {
+      this.calendar = response;
+    });
+
+    return Promise.resolve();
+  };
+
+  @action
+  cleanCalendars = () => {
+    this.calendars = [];
+  };
+
+  @action
+  cleanCalendar = () => {
+    this.calendar = {holidays : []};
   };
 }
 

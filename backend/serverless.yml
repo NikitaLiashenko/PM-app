@@ -397,6 +397,27 @@ functions:
               - X-Amz-Security-Token
               - X-Amz-User-Agent
             allowCredentials: true
+  getAllCalendars:
+    handler: src/calendar/getAllCalendars.handler
+    runtime: nodejs8.10
+    memorySize: 128
+    timeout: 30
+    role: calendarDynamoReadRole
+    events:
+      - http:
+          path: /calendar
+          method: get
+          authorizer: authorizer
+          cors:
+            origin: '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
   createCalendar:
     handler: src/calendar/createCalendar.handler
     runtime: nodejs8.10
@@ -1065,6 +1086,7 @@ resources:
                 - Effect: Allow
                   Action:
                     - dynamodb:Query
+                    - dynamodb:Scan
                   Resource:
                     - 'Fn::Join':
                         - ':'

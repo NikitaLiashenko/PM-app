@@ -9,21 +9,6 @@ module.exports.handler = async(event) => {
   const location = event.pathParameters.location;
   const body = JSON.parse(event.body);
 
-  const user = await userHelper.getUserData(event);
-
-  if(user.role !== 'Admin'){
-    return {
-      statusCode : 403,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Credentials': true,
-      },
-      body : JSON.stringify({
-        message : 'You are not allowed to do this action'
-      })
-    };
-  }
-
   const isValid = ajv.validate('createCalendar', body);
 
   if(!isValid){

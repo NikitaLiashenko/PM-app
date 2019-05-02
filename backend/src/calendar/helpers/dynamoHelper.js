@@ -34,6 +34,15 @@ const getCalendar = async(location) => {
     .then(result => result.Items[0]);
 };
 
+const getAllCalendars = async() => {
+  const params = {
+    TableName : config.get('aws.dynamodb.calendar.table')
+  };
+
+  return await dynamo.scan(params).promise()
+    .then(result => result.Items);
+};
+
 const createCalendar = async(calendarData) => {
   const params = {
     TableName : config.get('aws.dynamodb.calendar.table'),
@@ -59,6 +68,7 @@ const updateCalendar = async(updateParams) => {
 module.exports = {
   getUser,
   getCalendar,
+  getAllCalendars,
   createCalendar,
   updateCalendar
 };

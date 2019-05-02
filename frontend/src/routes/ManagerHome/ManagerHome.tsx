@@ -123,12 +123,16 @@ class ManagerHome extends Component<Props & RouteComponentProps & FormComponentP
                 </Link>
               </Menu.Item>
               <Menu.Item key="2">
+                <Link to={links.team}>
                 <Icon type="team" />
                 <span className="menu-text">Team</span>
+                </Link>
               </Menu.Item>
               <Menu.Item key="3">
+                <Link to={links.calendar}>
                 <Icon type="calendar" />
                 <span className="menu-text">Calendar</span>
+                </Link>
               </Menu.Item>
             </Menu>
           </Sider>
