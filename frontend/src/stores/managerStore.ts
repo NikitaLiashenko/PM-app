@@ -2,6 +2,7 @@ import {action ,observable, runInAction} from "mobx";
 import ProjectService, {Project} from '@/services/projectService';
 import TaskService, {Task} from '@/services/taskService';
 import WorkerService, {Worker} from '@/services/workerService';
+import RiskService, {Risk} from '@/services/riskService';
 
 class ManagerStore {
   @observable
@@ -18,6 +19,12 @@ class ManagerStore {
 
   @observable
   team : Array<Worker> = [];
+
+  @observable
+  risks : Array<Risk> = [];
+
+  @observable
+  risk : Risk = {};
 
   @action
   getAllUserProjects = async() => {
@@ -150,11 +157,11 @@ class ManagerStore {
   };
 
   @action
-  updateTask = async (task : Task) => {
+  updateTask = async (taskId : string, task : Task) => {
     let response : any;
 
     try {
-      response = await TaskService.updateProjectTask(this.project.projectId as string, this.task.taskId as string, task);
+      response = await TaskService.updateProjectTask(this.project.projectId as string, taskId, task);
     } catch(responseError){
       return Promise.reject(responseError.message);
     }
@@ -243,6 +250,90 @@ class ManagerStore {
     }
 
     return Promise.resolve();
+  };
+
+  @action
+  getAllProjectRisks = async(projectId : string) => {
+    let response : any;
+
+    try {
+      response = await RiskService.getAllProjectRisks(projectId);
+    } catch( responseError){
+      return Promise.reject(responseError.message);
+    }
+
+    runInAction(() => {
+      this.risks = response;
+    });
+
+    return Promise.resolve();
+  };
+
+  @action
+  getProjectRisk = async(projectId : string, riskId : string) => {
+    let response : any;
+
+    try {
+      response = await RiskService.getProjectRisk(projectId, riskId);
+    } catch(responseError){
+      return Promise.reject(responseError.message);
+    }
+
+    runInAction(() => {
+      this.risk = response;
+    });
+
+
+    return Promise.resolve();
+  };
+
+  @action
+  createRisk = async(risk : Risk) => {
+    let response : any;
+
+    try {
+      response = await RiskService.createProjectRisk(this.project.projectId as string, risk)
+    } catch(responseError){
+      return Promise.reject(responseError.message);
+    }
+
+    return Promise.resolve(response);
+  };
+
+  @action
+  updateRisk = async(riskId : string, risk : Risk) => {
+    let response : any;
+
+    try {
+      response = await RiskService.updateProjectRisk(this.project.projectId as string, riskId, risk);
+    } catch(responseError){
+      return Promise.reject(responseError.message);
+    }
+
+    return Promise.resolve();
+  };
+
+  @action
+  deleteRisk = async() => {
+    let response : any;
+
+    try {
+      response = await RiskService.deleteProjectRisk(this.project.projectId as string, this.risk.riskId as string);
+    } catch(responseError){
+      return Promise.reject(responseError.message);
+    }
+
+    return Promise.resolve();
+  };
+
+  @action
+  cleanRisks = () => {
+    this.risks = [];
+  };
+
+  @action
+  cleanRisk = () => {
+    this.risk = {};
   };
 }
 

@@ -131,7 +131,7 @@ class Tasks extends Component<Props & FormComponentProps, State>{
           });
 
           if(this.state.taskId) {
-            actions.updateProjectTask(values)
+            actions.updateProjectTask(this.state.taskId, values)
               .then(() => {
                 actions.cleanTasks();
                 this.setState({
@@ -174,8 +174,10 @@ class Tasks extends Component<Props & FormComponentProps, State>{
               })
               .then(() => {
                 this.setState({
-                  areTasksLoading: false
+                  areTasksLoading: false,
+                  confirmLoading : false
                 });
+                this.props.form.resetFields();
               })
               .catch(error => {
                 console.error(error);
@@ -235,7 +237,7 @@ class Tasks extends Component<Props & FormComponentProps, State>{
                                   }}>{element.summary}</Title>
                                 </Col>
                                 <Col span={4}>
-                                  <Text type="secondary">{`${element.estimateMax} h`}</Text>
+                                  <Text type="secondary">{`${element.estimateMax} d`}</Text>
                                 </Col>
                               </Row>
                             </div>
@@ -269,13 +271,13 @@ class Tasks extends Component<Props & FormComponentProps, State>{
                                   <Text strong={true}>Estimate Min:</Text>
                                 </Col>
                                 <Col span={2}>
-                                  <Text>{this.props.managerStore.task.estimateMin || '  '} h</Text>
+                                  <Text>{this.props.managerStore.task.estimateMin || '  '} d</Text>
                                 </Col>
                                 <Col span={4}>
                                   <Text strong={true}>Estimate Max:</Text>
                                 </Col>
                                 <Col span={2}>
-                                  <Text>{this.props.managerStore.task.estimateMax || '  '} h</Text>
+                                  <Text>{this.props.managerStore.task.estimateMax || '  '} d</Text>
                                 </Col>
                               </Row>
                             </Col>
@@ -306,7 +308,7 @@ class Tasks extends Component<Props & FormComponentProps, State>{
                                 </Col>
                                 <Col span={24}>
                                   <Text strong={true}>Progress:</Text>
-                                  <Paragraph>{this.props.managerStore.task.progress}%</Paragraph>
+                                  <Paragraph>{this.props.managerStore.task.progress as number * 100}%</Paragraph>
                                 </Col>
                                 <Col span={24}>
                                   <Text strong={true}>Predecessors:</Text>
@@ -560,7 +562,13 @@ class Tasks extends Component<Props & FormComponentProps, State>{
                   ],
                   initialValue : this.props.managerStore.task.progress
                 })(
-                  <InputNumber min={0} className="full-width" />
+                  <InputNumber min={0}
+                               max={100}
+                               step={0.01}
+                               formatter={value => `${value as number * 100}%`}
+                               parser={value => parseInt((value as string).replace('%', '')) / 100}
+                               className="full-width"
+                  />
                 ) :
                 getFieldDecorator('progress', {
                   rules: [
@@ -570,7 +578,12 @@ class Tasks extends Component<Props & FormComponentProps, State>{
                     }
                   ]
                 })(
-                  <InputNumber min={0} className="full-width" />
+                  <InputNumber min={0}
+                               max={100}
+                               step={0.01}
+                               formatter={value => `${value as number * 100}%`}
+                               parser={value => parseInt((value as string).replace('%', '')) / 100}
+                               className="full-width" />
                 )
               }
             </Form.Item>

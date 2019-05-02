@@ -4,6 +4,7 @@ import React, {Fragment, Component, SyntheticEvent} from "react";
 import {inject, observer} from "mobx-react";
 import MainInfo from './Tabs/MainInfo';
 import Tasks from './Tabs/Tasks';
+import Risks from './Tabs/Risks';
 import Gantt from './Tabs/Gantt';
 import {FormComponentProps} from "antd/lib/form/Form";
 import {
@@ -82,7 +83,9 @@ class Project extends Component<Props & RouteComponentProps & FormComponentProps
                 <TabPane tab="Tasks" key="2">
                   <Tasks managerStore={this.props.managerStore} projectId={(this.props.match.params as any).projectId}/>
                 </TabPane>
-                <TabPane tab="Risks" key="3">Content of Tab Pane 3</TabPane>
+                <TabPane tab="Risks" key="3">
+                  <Risks managerStore={this.props.managerStore} projectId={(this.props.match.params as any).projectId}/>
+                </TabPane>
                 <TabPane tab="Team" key="4">Content of Tab Pane 4</TabPane>
                 <TabPane tab="Gantt Diagram" key="5" style={{ height : '80vh'}}><Gantt managerStore={this.props.managerStore} projectId={(this.props.match.params as any).projectId}/></TabPane>
                 <TabPane tab="Crash" key="6">Content of Tab Pane 6</TabPane>

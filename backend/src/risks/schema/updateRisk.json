@@ -5,6 +5,11 @@
   "description": "Schema for project risk update",
   "type": "object",
   "properties": {
+    "summary" : {
+      "type": "string",
+      "description" : "Risk summary",
+      "minLength": 1
+    },
     "description" : {
       "type": "string",
       "description" : "Risk description",

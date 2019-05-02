@@ -13,8 +13,8 @@ const createProjectTask = (task : Task) => {
   return stores.managerStore.createTask(task);
 };
 
-const updateProjectTask = (task : Task) => {
-  return stores.managerStore.updateTask(task);
+const updateProjectTask = (taskId : string, task : Task) => {
+  return stores.managerStore.updateTask(taskId, task);
 };
 
 const deleteProjectTask = () => {

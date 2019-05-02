@@ -28,6 +28,7 @@ class Gantt extends Component<Props, State>{
 
         this.props.managerStore.tasks.forEach(task => {
           data.push({
+            taskId : task.taskId as string,
             id : (task.orderId as number) + 1,
             text : task.summary,
             start_date : task.startDate,
@@ -97,6 +98,24 @@ class Gantt extends Component<Props, State>{
         };
 
         gantt.config.drag_links = false;
+
+        gantt.config.show_progress = true;
+
+        gantt.templates.progress_text=function(start : any, end : any, task : any){
+          return `${Math.round(task.progress * 100)}%`;
+        };
+
+        gantt.attachEvent("onAfterTaskDrag", function(id, mode, e){
+          const task = gantt.getTask(id);
+          console.log(task);
+
+          const taskUpdate = {
+            progress : Math.round(task.progress * 100) / 100
+          };
+
+          actions.updateProjectTask(task.taskId, taskUpdate)
+            .catch(console.error);
+        });
 
         gantt.parse({data, links});
       })

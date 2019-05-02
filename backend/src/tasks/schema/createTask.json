@@ -124,7 +124,7 @@
       "type" : "number",
       "description": "Task progress",
       "minimum" : 0,
-      "maximum" : 100
+      "maximum" : 1
     }
   }
 }
