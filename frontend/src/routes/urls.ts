@@ -8,7 +8,8 @@ export default {
     managerHome : '/manager/home',
     project : '/project/:projectId',
     calendar : '/calendar',
-    team : '/team/',
+    team : '/team',
+    rateCard : '/rates',
 
     adminHome : '/admin/home'
 };

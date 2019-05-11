@@ -63,6 +63,12 @@ class Calendar extends Component<Props & RouteComponentProps> {
                   <span className="menu-text">Calendar</span>
                 </Link>
               </Menu.Item>
+              <Menu.Item key="4">
+                <Link to={links.rateCard}>
+                  <Icon type="dollar" />
+                  <span className="menu-text">Rate Card</span>
+                </Link>
+              </Menu.Item>
             </Menu>
           </Sider>
           <Layout>

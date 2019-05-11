@@ -19,6 +19,9 @@ class ManagerStore {
   task : Task = {};
 
   @observable
+  projectTeam : Array<Worker> = [];
+
+  @observable
   team : Array<Worker> = [];
 
   @observable
@@ -112,7 +115,7 @@ class ManagerStore {
   cleanProject = () => {
     this.project = {};
     this.tasks = [];
-    this.team = [];
+    this.projectTeam = [];
   };
 
   @action
@@ -214,7 +217,7 @@ class ManagerStore {
     }
 
     runInAction(() => {
-      this.team = response;
+      this.projectTeam = response;
     });
 
     return Promise.resolve();
@@ -222,7 +225,7 @@ class ManagerStore {
 
   @action
   cleanProjectTeam = () => {
-    this.team = [];
+    this.projectTeam = [];
   };
 
   @action
@@ -244,7 +247,7 @@ class ManagerStore {
 
     const locations : Array<string> = [];
 
-    this.team.forEach(worker => {
+    this.projectTeam.forEach(worker => {
       if(!locations.includes(worker.location as string)){
         locations.push(worker.location as string);
       }
@@ -429,6 +432,29 @@ class ManagerStore {
   @action
   cleanCalendar = () => {
     this.calendar = {holidays : []};
+  };
+
+  @action
+  getAllWorkers = async() => {
+    let response : any;
+
+    try {
+      response = await WorkerService.getAllWorkers();
+    } catch(responseError){
+      return Promise.reject(responseError.message);
+    }
+
+    runInAction(() => {
+      this.team = response;
+    });
+
+
+    return Promise.resolve();
+  };
+
+  @action
+  cleanWorkers = () => {
+    this.team = [];
   };
 }
 

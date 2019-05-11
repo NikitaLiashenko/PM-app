@@ -22,6 +22,13 @@ const getProjectTeam = async(projectId : string) : Promise<Array<Worker>> => {
   return response.data;
 };
 
+const getAllWorkers = async() : Promise<Array<Worker>> => {
+  const response = await apiClient.get('/worker');
+
+  return response.data;
+};
+
 export default {
-  getProjectTeam
+  getProjectTeam,
+  getAllWorkers
 };

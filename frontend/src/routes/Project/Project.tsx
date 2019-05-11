@@ -6,6 +6,7 @@ import MainInfo from './Tabs/MainInfo';
 import Tasks from './Tabs/Tasks';
 import Risks from './Tabs/Risks';
 import Gantt from './Tabs/Gantt';
+import Team from './Tabs/Team';
 import {FormComponentProps} from "antd/lib/form/Form";
 import {
   Icon,
@@ -62,6 +63,12 @@ class Project extends Component<Props & RouteComponentProps & FormComponentProps
                 <Icon type="calendar" />
                 <span className="menu-text">Calendar</span>
               </Menu.Item>
+              <Menu.Item key="4">
+                <Link to={links.rateCard}>
+                  <Icon type="dollar" />
+                  <span className="menu-text">Rate Card</span>
+                </Link>
+              </Menu.Item>
             </Menu>
           </Sider>
           <Layout>
@@ -86,7 +93,9 @@ class Project extends Component<Props & RouteComponentProps & FormComponentProps
                 <TabPane tab="Risks" key="3">
                   <Risks managerStore={this.props.managerStore} projectId={(this.props.match.params as any).projectId}/>
                 </TabPane>
-                <TabPane tab="Team" key="4">Content of Tab Pane 4</TabPane>
+                <TabPane tab="Team" key="4">
+                  <Team managerStore={this.props.managerStore} projectId={(this.props.match.params as any).projectId}/>
+                </TabPane>
                 <TabPane tab="Gantt Diagram" key="5" style={{ height : '80vh'}}><Gantt managerStore={this.props.managerStore} projectId={(this.props.match.params as any).projectId}/></TabPane>
                 <TabPane tab="Crash" key="6">Content of Tab Pane 6</TabPane>
               </Tabs>

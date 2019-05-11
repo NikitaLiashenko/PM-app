@@ -32,3 +32,12 @@
 .critical > .gantt_task_progress_wrapper > .gantt_task_progress {
     background-color: rgba(0,0,0,.4);
 }
+
+.edit-team-action {
+    cursor: pointer;
+}
+
+.edit-team-action > svg {
+    height : 1.5em;
+    width: 1.5em;
+}

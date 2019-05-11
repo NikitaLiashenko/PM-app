@@ -134,6 +134,12 @@ class ManagerHome extends Component<Props & RouteComponentProps & FormComponentP
                 <span className="menu-text">Calendar</span>
                 </Link>
               </Menu.Item>
+              <Menu.Item key="4">
+                <Link to={links.rateCard}>
+                  <Icon type="dollar" />
+                  <span className="menu-text">Rate Card</span>
+                </Link>
+              </Menu.Item>
             </Menu>
           </Sider>
           <Layout>
@@ -179,19 +185,7 @@ class ManagerHome extends Component<Props & RouteComponentProps & FormComponentP
                                     <Card.Meta
                                       title={element.title}
                                     ></Card.Meta>
-                                    {/*<Row type="flex" justify="space-around" align="middle" style={{height : '100%'}}>*/}
-                                    {/*  <Col span={12}>*/}
-                                    {/*  <div className="center">*/}
-
-                                    {/*    <Icon type="project" rotate={-90} style={{ fontSize : '32px', color : "white"}}/>*/}
-
-                                    {/*  </div>*/}
-                                    {/*  </Col>*/}
-                                    {/*</Row>*/}
                                   </Card>
-                                  {/*<Row type="flex" justify="space-around">*/}
-                                  {/*  <Text className="project-card-title">{element.title}</Text>*/}
-                                  {/*</Row>*/}
                                 </div>) :
                               ``}
                             <div>
