@@ -169,29 +169,33 @@ class ManagerHome extends Component<Props & RouteComponentProps & FormComponentP
                                 <div key={i}>
                                   <Card className="project-card"
                                         bodyStyle={{
-                                          height : '180px',
+                                          // height : '180px',
                                           cursor : 'pointer'
                                         }}
-                                        style={{ backgroundColor : element.ui.color}}
                                         onClick={() => this.handleOpenProject(element.projectId)}
+                                        cover={<img alt="example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />}
+                                        actions={[<Icon type="setting" />, <Icon type="edit" />, <Icon type="ellipsis" />]}
                                   >
-                                    <Row type="flex" justify="space-around" align="middle" style={{height : '100%'}}>
-                                      <Col span={12}>
-                                      <div className="center">
+                                    <Card.Meta
+                                      title={element.title}
+                                    ></Card.Meta>
+                                    {/*<Row type="flex" justify="space-around" align="middle" style={{height : '100%'}}>*/}
+                                    {/*  <Col span={12}>*/}
+                                    {/*  <div className="center">*/}
 
-                                        <Icon type="project" rotate={-90} style={{ fontSize : '32px', color : "white"}}/>
+                                    {/*    <Icon type="project" rotate={-90} style={{ fontSize : '32px', color : "white"}}/>*/}
 
-                                      </div>
-                                      </Col>
-                                    </Row>
+                                    {/*  </div>*/}
+                                    {/*  </Col>*/}
+                                    {/*</Row>*/}
                                   </Card>
-                                  <Row type="flex" justify="space-around">
-                                    <Text className="project-card-title">{element.title}</Text>
-                                  </Row>
+                                  {/*<Row type="flex" justify="space-around">*/}
+                                  {/*  <Text className="project-card-title">{element.title}</Text>*/}
+                                  {/*</Row>*/}
                                 </div>) :
                               ``}
                             <div>
-                              <Card className="project-card new-project-card"
+                              <Card className="new-project-card"
                                     bodyStyle={{
                                       height : '180px',
                                       cursor : 'pointer'

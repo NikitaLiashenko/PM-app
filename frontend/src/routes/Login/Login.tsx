@@ -1,7 +1,7 @@
 import links from '@/routes/urls';
 import { AuthStore } from '@/stores';
 import actions from '@/actions';
-import {Form, Row, Col, Button, Icon, Input, notification, Spin} from 'antd';
+import {Form, Row, Col, Button, Icon, Input, notification, Spin, Card, Checkbox} from 'antd';
 import {FormComponentProps} from "antd/lib/form/Form";
 import {inject, observer} from 'mobx-react';
 import React, {Component, SyntheticEvent} from 'react';
@@ -60,14 +60,14 @@ class Login extends Component<Props & RouteComponentProps & FormComponentProps> 
     const {isLoading} = this.props.authStore;
 
     return(
-      <Row className="full-height">
+      <Row className="full-height content-background">
         <Col span={24}>
           <div className="content-container">
             <Row type="flex" justify="space-around" align="middle" className="full-height">
-              <Col span={12}>
-                <div className="center">
-                  <div className="login-title">Login</div>
-                  <Form onSubmit={this.login}>
+              <Col span={6}>
+                <Card className="center">
+                  <div className="login-title">Sign In</div>
+                  <Form onSubmit={this.login} className="full-width">
                     <Form.Item>
                       {getFieldDecorator('email', {
                         rules : [
@@ -77,7 +77,7 @@ class Login extends Component<Props & RouteComponentProps & FormComponentProps> 
                           }
                         ]
                       })(
-                        <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} className="login-input" placeholder="Email" />
+                        <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} className="login-input full-width" placeholder="Your email" size="large" />
                       )}
                     </Form.Item>
                     <Form.Item>
@@ -89,17 +89,28 @@ class Login extends Component<Props & RouteComponentProps & FormComponentProps> 
                           }
                         ]
                       })(
-                        <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} className="login-input" type="password" placeholder="Password" />
+                        <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} className="login-input full-width" type="password" placeholder="Your password" size="large" />
                       )}
                     </Form.Item>
-                    <Form.Item>
-                      <Button type="primary" loading={isLoading} icon="login" htmlType="submit" className="login-form-button">
-                        Log in
+                    <Form.Item style={{marginTop : '24px'}}>
+                      <Button shape="round" loading={isLoading} icon="login" htmlType="submit" className="login-form-button">
+                        Sign in
                       </Button>
-                      <br/>
-                      Or <Link to={links.signup}>register now!</Link>
+                      <div className="invite-sign-up">No account? <Link to={links.signup}>Sign Up</Link></div>
                     </Form.Item>
                   </Form>
+                </Card>
+                <div className="full-width card-footer">
+                  <Row type="flex" justify="space-around" align="middle">
+                    <Col span={12}>
+                      <div className="social-sign-in">or Sign In with:</div>
+                      <Row type="flex" justify="space-around" align="middle">
+                        <Icon type="facebook" className="social-icon" />
+                        <Icon type="twitter" className="social-icon"/>
+                        <Icon type="google-plus" className="social-icon"/>
+                      </Row>
+                    </Col>
+                  </Row>
                 </div>
               </Col>
             </Row>

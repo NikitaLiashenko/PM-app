@@ -6,7 +6,33 @@
     margin-bottom: 15px;
 }
 
-.register-input, .register-form-button{
-    width: 40%;
+.register-form-button{
+    background-color: #ff0476;
+    color: #fff;
+    font-size: 16px;
+    border: none;
+    font-weight: 400;
+    outline: none;
+    text-align: center;
+    cursor: pointer;
+    padding-left: 15px;
+    padding-right: 15px;
+    height: 45px;
+    line-height: 24px;
+    width: 180px;
+    margin-left: 15px;
+    margin-right: 15px;
 }
 
+.register-form-button:hover {
+    background-color: #b70053;
+    color: #fff;
+}
+
+.invite-sign-in {
+    color: #9e9e9e;
+    font-size: .9rem;
+    font-weight: 400;
+    line-height: 1.5;
+    margin: 10px 0;
+}

@@ -33,9 +33,9 @@
 }
 
 .project-card {
-    height: 180px;
-    width: 180px;
-    border-radius: 25px;
+    height: 235px;
+    width: 200px;
+    /*border-radius: 25px;*/
     margin: 10px;
 }
 
@@ -45,4 +45,7 @@
 
 .new-project-card{
     border: 2px dashed;
+    height: 200px;
+    width: 200px;
+    margin: 10px;
 }

@@ -1,11 +1,11 @@
 import links from '@/routes/urls';
 import {AuthStore} from '@/stores';
 import actions from '@/actions';
-import {Form, Row, Col, Button, Icon, Input, Spin,} from 'antd';
+import {Form, Row, Col, Button, Icon, Input, Spin, Card, Checkbox} from 'antd';
 import {FormComponentProps} from "antd/lib/form/Form";
 import {inject, observer} from 'mobx-react';
 import React, {Component, SyntheticEvent} from 'react';
-import {RouteComponentProps, withRouter} from "react-router-dom";
+import {Link, RouteComponentProps, withRouter} from "react-router-dom";
 import './Register.css';
 
 type Props = {
@@ -86,13 +86,13 @@ class Register extends Component<Props & RouteComponentProps & FormComponentProp
     const {getFieldDecorator} = this.props.form;
     const {isLoading} = this.state;
     return (
-      <Row className="full-height">
+      <Row className="full-height content-background">
         <Col span={24}>
           <div className="content-container">
             <Row type="flex" justify="space-around" align="middle" className="full-height">
-              <Col span={12}>
-                <div className="center">
-                  <div className="register-title">Register</div>
+              <Col span={6}>
+                <Card className="center">
+                  <div className="register-title">Sign Up</div>
                   <Form onSubmit={this.register}>
                     <Form.Item>
                       {getFieldDecorator('email', {
@@ -103,7 +103,7 @@ class Register extends Component<Props & RouteComponentProps & FormComponentProp
                           }
                         ]
                       })(
-                        <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} className="register-input" placeholder="Email" />
+                        <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} className="register-input full-width" placeholder="Your email" size="large"/>
                       )}
                     </Form.Item>
                     <Form.Item>
@@ -118,7 +118,7 @@ class Register extends Component<Props & RouteComponentProps & FormComponentProp
                           }
                         ]
                       })(
-                        <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} className="register-input" type="password" placeholder="Password" />
+                        <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} className="register-input full-width" type="password" placeholder="Your password" size="large" />
                       )}
                     </Form.Item>
                     <Form.Item>
@@ -133,15 +133,29 @@ class Register extends Component<Props & RouteComponentProps & FormComponentProp
                           }
                         ]
                       })(
-                        <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} className="register-input" type="password" placeholder="Confirm password" />
+                        <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} className="register-input full-width" type="password" placeholder="Confirm password" size="large"/>
                       )}
                     </Form.Item>
-                    <Form.Item>
-                      <Button type="primary" loading={isLoading} icon="arrow-up" htmlType="submit" className="register-form-button" onBlur={this.handleConfirmBlur}>
-                        Register
+                    <Checkbox className="terms-conditions">Accept the <a>Terms and Conditions</a></Checkbox>
+                    <Form.Item style={{marginTop : '24px'}}>
+                      <Button shape="round" loading={isLoading} icon="arrow-up" htmlType="submit" className="register-form-button" onBlur={this.handleConfirmBlur}>
+                        Sign Up
                       </Button>
+                      <div className="invite-sign-in">Have an account? <Link to={links.signin}>Sign In</Link></div>
                     </Form.Item>
                   </Form>
+                </Card>
+                <div className="full-width card-footer">
+                  <Row type="flex" justify="space-around" align="middle">
+                    <Col span={12}>
+                      <div className="social-sign-in">or Sign Up with:</div>
+                      <Row type="flex" justify="space-around" align="middle">
+                        <Icon type="facebook" className="social-icon" />
+                        <Icon type="twitter" className="social-icon"/>
+                        <Icon type="google-plus" className="social-icon"/>
+                      </Row>
+                    </Col>
+                  </Row>
                 </div>
               </Col>
             </Row>
