@@ -28,7 +28,21 @@ const getAllWorkers = async() : Promise<Array<Worker>> => {
   return response.data;
 };
 
+const prepareProjectTeam = async(teamParams : any, projectId : string) : Promise<Array<Worker>> => {
+  const response = await apiClient.post(`/project/${projectId}/team`, teamParams);
+
+  return response.data;
+};
+
+const confirmProjectTeam = async(team : Array<Worker>, projectId : string) => {
+  const response = await apiClient.put(`/project/${projectId}/team`, team);
+
+  return response.data;
+};
+
 export default {
   getProjectTeam,
-  getAllWorkers
+  getAllWorkers,
+  prepareProjectTeam,
+  confirmProjectTeam
 };

@@ -156,7 +156,7 @@ class ManagerHome extends Component<Props & RouteComponentProps & FormComponentP
                 <Col span={24}>
                   <div className="content-container">
                     <Row type="flex" justify="space-around" align="top" className="full-height">
-                      <Col span={12}>
+                      <Col span={20}>
                         <div>
                           <Row>
                             <Text className="projects-title">Projects</Text>

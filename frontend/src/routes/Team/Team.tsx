@@ -191,6 +191,7 @@ class Team extends Component<Props & RouteComponentProps, State>{
           if(moment().diff(projectEndDate) > 0){
             return '';
           }
+          console.log(record.firstName, record.project.projectId);
           const project = this.props.managerStore.projectsList.find(project => project.projectId === record.project.projectId);
           if(!project){
             return '';
@@ -265,7 +266,7 @@ class Team extends Component<Props & RouteComponentProps, State>{
                           <Row>
                             <Col span={23}>
                               <Text className="projects-title">Team</Text>
-                              <Badge count={this.props.managerStore.projectTeam.length}
+                              <Badge count={this.props.managerStore.team.length}
                                      style={{
                                        backgroundColor: '#fff',
                                        color: '#999',

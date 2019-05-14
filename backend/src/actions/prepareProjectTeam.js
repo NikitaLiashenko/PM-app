@@ -60,7 +60,17 @@ module.exports.handler = async(event) => {
     }
   }
 
-  const team = utils.prepareTeam(body, workers);
+  const projectTeam = utils.prepareTeam(body, workers);
+
+  const flattenedTeam = [];
+
+  Object.keys(projectTeam).forEach(team => {
+    Object.keys(projectTeam[team]).forEach(seniorityLevel => {
+      projectTeam[team][seniorityLevel].forEach(worker => {
+        flattenedTeam.push(worker);
+      });
+    });
+  });
 
   return {
     statusCode : 200,
@@ -68,6 +78,6 @@ module.exports.handler = async(event) => {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,
     },
-    body : JSON.stringify(team)
+    body : JSON.stringify(flattenedTeam)
   }
 };

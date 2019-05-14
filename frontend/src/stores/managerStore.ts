@@ -4,6 +4,7 @@ import TaskService, {Task} from '@/services/taskService';
 import WorkerService, {Worker} from '@/services/workerService';
 import RiskService, {Risk} from '@/services/riskService';
 import CalendarService, {Calendar} from '@/services/calendarService';
+import calendarActions from "@/actions/calendarActions";
 
 class ManagerStore {
   @observable
@@ -212,6 +213,23 @@ class ManagerStore {
 
     try{
       response = await WorkerService.getProjectTeam(this.project.projectId as string);
+    } catch(responseError){
+      return Promise.reject(responseError.message);
+    }
+
+    runInAction(() => {
+      this.projectTeam = response;
+    });
+
+    return Promise.resolve();
+  };
+
+  @action
+  prepareProjectTeam = async (teamParams : any) => {
+    let response : any;
+
+    try {
+      response = await WorkerService.prepareProjectTeam(teamParams, this.project.projectId as string);
     } catch(responseError){
       return Promise.reject(responseError.message);
     }

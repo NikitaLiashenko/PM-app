@@ -56,12 +56,16 @@ class Project extends Component<Props & RouteComponentProps & FormComponentProps
                 </Link>
               </Menu.Item>
               <Menu.Item key="2">
-                <Icon type="team" />
-                <span className="menu-text">Team</span>
+                <Link to={links.team}>
+                  <Icon type="team" />
+                  <span className="menu-text">Team</span>
+                </Link>
               </Menu.Item>
               <Menu.Item key="3">
-                <Icon type="calendar" />
-                <span className="menu-text">Calendar</span>
+                <Link to={links.calendar}>
+                  <Icon type="calendar" />
+                  <span className="menu-text">Calendar</span>
+                </Link>
               </Menu.Item>
               <Menu.Item key="4">
                 <Link to={links.rateCard}>

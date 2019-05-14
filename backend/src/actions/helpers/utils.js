@@ -388,13 +388,13 @@ function prepareTeam(projectParams, workers){
         ratings[developer.seniorityLevel].push(Object.assign({},
           developer,
           {
-            rating : skillRating
+            rating : Math.round(skillRating * 100) / 100
           }))
       } else {
         ratings[developer.seniorityLevel] = [Object.assign({},
           developer,
           {
-            rating : skillRating
+            rating : Math.round(skillRating * 100) / 100
           })];
       }
     });

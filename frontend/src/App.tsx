@@ -7,6 +7,7 @@ import ManagerHome from '@/routes/ManagerHome/ManagerHome';
 import Project from '@/routes/Project/Project';
 import Calendar from '@/routes/Calendar/Calendar';
 import Team from '@/routes/Team/Team';
+import RateCard from '@/routes/RateCard/RateCard';
 // import RootRedirect from '@/routes/RootRedirect';
 import { BrowserRouter, Route, Switch} from 'react-router-dom';
 import PrivateRoute from '@/routes/PrivateRoute';
@@ -27,10 +28,12 @@ class App extends Component {
               {/*<PrivateRoute role="Manager" path={links.project} component={Project}/>*/}
               {/*<PrivateRoute role="Manager" path={links.calendar} component={Calendar}/>*/}
               {/*<PrivateRoute role="Manager" path={links.team} component={Team}/>*/}
+              {/*<PrivateRoute role="Manager" path={links.rateCard} component={RateCard}/>*/}
               <Route exact={true} path={links.managerHome} component={ManagerHome}/>
               <Route exact={true} path={links.project} component={Project}/>
               <Route exact={true} path={links.calendar} component={Calendar}/>
               <Route exact={true} path={links.team} component={Team}/>
+              <Route exact={true} path={links.rateCard} component={RateCard}/>
               <Route exact={true} path={links.notFound} component={NotFound}/>
             </Switch>
           </BrowserRouter>

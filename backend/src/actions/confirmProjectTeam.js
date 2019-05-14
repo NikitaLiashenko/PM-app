@@ -9,7 +9,7 @@ module.exports.handler = async(event) => {
   const username = await userHelper.getUserData(event);
 
   let project;
-
+  console.log('Project');
   try {
     project = await dynamoHelper.getProject(projectId, username);
   } catch(dynamoError){
@@ -42,12 +42,8 @@ module.exports.handler = async(event) => {
 
   const workersToUpdate = [];
 
-  Object.keys(body).forEach(team => {
-    Object.keys(body[team]).forEach(seniorityLevel => {
-      body[team][seniorityLevel].forEach(worker => {
-        workersToUpdate.push(worker.username);
-      });
-    });
+  body.forEach(worker => {
+    workersToUpdate.push(worker.username);
   });
 
   const workersUpdatePromises = [];
@@ -62,7 +58,7 @@ module.exports.handler = async(event) => {
       }
     }))
   });
-
+  console.log('Workers');
   try{
     await Promise.all(workersUpdatePromises);
 
