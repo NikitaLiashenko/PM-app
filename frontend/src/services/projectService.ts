@@ -1,4 +1,7 @@
 import {apiClient} from '@/api/clients/clients';
+import {Task} from "@/services/taskService";
+import {Risk} from "@/services/riskService";
+import {Crash} from "@/services/crashService";
 
 export type Project = {
   projectId? : string,
@@ -12,13 +15,13 @@ export type Project = {
   hoursEstimated? : number,
   projectCost? : number,
   payed? : number,
-  crash? : Array<object>,
+  crash? : Array<Crash>,
   graph? : Array<Array<number>>,
   history? : Array<object>,
   overheadCostPerDay? : number,
   projectDuration? : number,
-  risks? : Array<object>,
-  tasks? : Array<object>,
+  risks? : Array<Risk>,
+  tasks? : Array<Task>,
   ui? : any
 };
 

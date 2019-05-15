@@ -60,6 +60,7 @@ class Tasks extends Component<Props & FormComponentProps, State>{
         this.setState({
           areTasksLoading : false
         });
+        return actions.getProjectTeam();
       })
       .catch(console.error);
   }
@@ -320,6 +321,18 @@ class Tasks extends Component<Props & FormComponentProps, State>{
                                     return <Paragraph key={i}>{task.summary}</Paragraph>
                                   })}
                                 </Col>
+                                <Col span={24}>
+                                  <Text strong={true}>Assignee:</Text>
+                                  {this.props.managerStore.task.assignee ? (
+                                    <Paragraph>{[this.props.managerStore.task.assignee].map(assignee => {
+                                      const worker = this.props.managerStore.projectTeam.find(worker => worker.username === assignee);
+                                      //@ts-ignore
+                                      return `${worker.firstName} ${worker.lastName}`;
+                                    })}</Paragraph>
+                                  ) : (
+                                    <Paragraph></Paragraph>
+                                  )}
+                                </Col>
                               </Row>
                             </Col>
                           </Row>
@@ -342,6 +355,10 @@ class Tasks extends Component<Props & FormComponentProps, State>{
           onCancel={() => this.handleModalCancel()}
           confirmLoading={this.state.confirmLoading}
           okText={this.props.managerStore.task.taskId ? 'Update' : 'Create'}
+          bodyStyle={{
+            height : '60vh',
+            overflowY : 'scroll'
+          }}
         >
           <Form layout="vertical">
             <Form.Item label="Summary">
@@ -621,6 +638,39 @@ class Tasks extends Component<Props & FormComponentProps, State>{
                         if(element.taskId !== this.props.managerStore.task.taskId){
                           return <Option key={i} value={element.taskId}>{element.summary}</Option>
                         }
+                      })}
+                    </Select>
+                  )
+              }
+            </Form.Item>
+            <Form.Item label="Assignee:">
+              {
+                this.props.managerStore.task.assignee ?
+                  getFieldDecorator('assignee', {
+                    rules: [
+                      {
+                        message: 'Please input the task assignee!'
+                      }
+                    ],
+                    initialValue : this.props.managerStore.task.assignee
+                  })(
+                    <Select>
+                      {this.props.managerStore.projectTeam && this.props.managerStore.projectTeam.map((element, i) => {
+                        return <Option key={i} value={element.username}>{`${element.firstName} ${element.lastName}`}</Option>
+                      })}
+                    </Select>
+                  )
+                  :
+                  getFieldDecorator('assignee', {
+                    rules: [
+                      {
+                        message: 'Please input the task assignee!'
+                      }
+                    ]
+                  })(
+                    <Select>
+                      {this.props.managerStore.projectTeam && this.props.managerStore.projectTeam.map((element, i) => {
+                        return <Option key={i} value={element.username}>{`${element.firstName} ${element.lastName}`}</Option>
                       })}
                     </Select>
                   )

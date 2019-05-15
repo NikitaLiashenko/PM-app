@@ -8,7 +8,8 @@ import {
   Menu,
   Icon,
   Typography,
-  Tabs
+  Tabs,
+  Button, Col, Row
 } from 'antd';
 import CalendarView from './CalendarView';
 
@@ -32,6 +33,10 @@ class Calendar extends Component<Props & RouteComponentProps> {
     actions.getAllCalendars()
       .catch(console.error);
   }
+
+  handleLogout = () => {
+    actions.logout();
+  };
 
   render() {
     return (
@@ -73,7 +78,14 @@ class Calendar extends Component<Props & RouteComponentProps> {
           </Sider>
           <Layout>
             <Header style={{ background: '#fff', padding: 0 }}>
-              <div className="title">Calendar</div>
+              <Row>
+                <Col span={20}>
+                  <div className="title">Calendar</div>
+                </Col>
+                <Col span={4}>
+                  <Button type="primary" shape="round" onClick={this.handleLogout}>Logout</Button>
+                </Col>
+              </Row>
             </Header>
             <Content style={{
               padding: 24,

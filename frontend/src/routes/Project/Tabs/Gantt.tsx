@@ -20,6 +20,7 @@ class Gantt extends Component<Props, State>{
 
   componentDidMount(){
     actions.getProjectTasks(this.props.projectId)
+      .then(() => actions.getProjectTeam())
       .then(() => {
         gantt.config.xml_date = '%Y-%m-%d';
         gantt.init(this.ganttContainer);
@@ -35,7 +36,13 @@ class Gantt extends Component<Props, State>{
             end_date : task.endDate,
             duration : task.estimateMax,
             progress : task.progress,
-            isOnCriticalPath : task.isOnCritPath
+            isOnCriticalPath : task.isOnCritPath,
+            assignee : task.assignee ? [task.assignee].map(assignee => {
+              const worker = this.props.managerStore.projectTeam.find(worker => worker.username === assignee);
+              //@ts-ignore
+              return `${worker.firstName} ${worker.lastName}`;
+            }) :
+              null
           });
 
           if((task.predecessor as Array<string>).length){

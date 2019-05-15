@@ -3,6 +3,7 @@ const userHelper = require('./helpers/userHelper');
 const dynamoHelper = require('./helpers/dynamoHelper');
 const utils = require('./helpers/utils');
 const _ = require('lodash');
+const momentBusinessDays = require('moment-business-days');
 
 module.exports.handler = async (event) => {
   const projectId = event.pathParameters.projectId;
@@ -68,37 +69,116 @@ module.exports.handler = async (event) => {
     }
   }
 
-  const projectCopy = _.cloneDeep(project);
+  let projectCopy = _.cloneDeep(project);
 
-  project = _.omit(project, ['graph', 'username', 'projectId', 'crash', 'risks', 'history']);
+  projectCopy = _.omit(projectCopy, ['graph', 'username', 'projectId', 'crash', 'risks', 'history']);
 
-  projectCopy.tasks.forEach(task => {
+  project.tasks.forEach(task => {
     task.estimateMax = crash[task.taskId].estimateMax;
   });
 
-  const tasksWithDirectCount = utils.countDirect(projectCopy.tasks, projectCopy.graph);
+  const tasksWithDirectCount = utils.countDirect(project.tasks, project.graph);
 
   const projectDuration = utils.countProjectDuration(tasksWithDirectCount);
 
-  const tasksBackward = utils.countBackward(tasksWithDirectCount, projectCopy.graph);
+  const tasksBackward = utils.countBackward(tasksWithDirectCount, project.graph);
 
   const tasksWithCriticalPath = utils.countCriticalPath(tasksBackward);
 
   const tasksFloats = utils.countFloats(tasksWithCriticalPath);
 
-  const tasksFreeFloat = utils.countFreeFloat(tasksFloats, projectCopy.graph);
+  const tasksFreeFloat = utils.countFreeFloat(tasksFloats, project.graph);
 
-  projectCopy.tasks = tasksFreeFloat;
-  projectCopy.projectCost = crash.projectCost;
-  projectCopy.projectDuration = projectDuration;
+  project.tasks = tasksFreeFloat;
+  project.projectCost = crash.projectCost;
+  project.projectDuration = projectDuration;
 
-  if(!projectCopy.history){
-    projectCopy.history = [project];
-  } else {
-    projectCopy.history.push(project);
+  console.log('Preparing project dates');
+
+  let workers;
+
+  try {
+    workers = await dynamoHelper.getAllWorkers(projectId);
+  } catch(dynamoError){
+    console.error(dynamoError);
+    return {
+      statusCode : 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
+      body : JSON.stringify({
+        message : dynamoError.message
+      })
+    }
   }
+
+  workers = workers.filter(worker => {
+    if(worker.project) {
+      return worker.project.projectId === projectId
+    } else {
+      return false;
+    }
+  });
+
+  const locations = _.uniq(workers.map(worker => worker.location));
+
+  console.log(locations);
+
+  const locationsRetrievalPromises = [];
+
+  locations.forEach(location => {
+    locationsRetrievalPromises.push(dynamoHelper.getCalendar(location));
+  });
+
+  let calendars;
+  try {
+    calendars = await Promise.all(locationsRetrievalPromises);
+  } catch(dynamoError){
+    console.error(dynamoError);
+
+    return {
+      statusCode : 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
+      body : JSON.stringify({
+        message: dynamoError.message
+      })
+    };
+  }
+
+  const holidays = calendars.map(location => location.holidays);
+
+  const unique = _.uniqBy(_.flattenDeep(holidays), 'date');
+
+  momentBusinessDays.updateLocale('en', {
+    holidays: unique,
+    holidayFormat: 'YYYY-MM-DD'
+  });
+
+  project.tasks.forEach(task => {
+    task.startDate = momentBusinessDays(project.startDate, 'YYYY-MM-DD')
+      .businessAdd(task.earlyStart)
+      .format('YYYY-MM-DD');
+    task.endDate = momentBusinessDays(project.startDate, 'YYYY-MM-DD')
+      .businessAdd(task.earlyFinish)
+      .format('YYYY-MM-DD');
+  });
+
+  project.endDate = momentBusinessDays(project.startDate, 'YYYY-MM-DD')
+    .businessAdd(project.projectDuration)
+    .format('YYYY-MM-DD');
+
+  if(!project.history){
+    project.history = [projectCopy];
+  } else {
+    project.history.push(projectCopy);
+  }
+  console.log(project);
   console.log(projectCopy);
-  const {updateString, expressionAttributeValues, expressionAttributeNames} = utils.prepareUpdateStringAndObject(_.omit(projectCopy, ['projectId']));
+  const {updateString, expressionAttributeValues, expressionAttributeNames} = utils.prepareUpdateStringAndObject(_.omit(project, ['projectId']));
 
   try {
     const updatedObject = await dynamoHelper.updateProject({

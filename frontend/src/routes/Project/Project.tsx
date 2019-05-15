@@ -7,6 +7,7 @@ import Tasks from './Tabs/Tasks';
 import Risks from './Tabs/Risks';
 import Gantt from './Tabs/Gantt';
 import Team from './Tabs/Team';
+import Crash from './Tabs/Crash';
 import {FormComponentProps} from "antd/lib/form/Form";
 import {
   Icon,
@@ -14,6 +15,7 @@ import {
   Menu,
   Tabs,
   Form,
+  Button, Col, Row
 } from 'antd';
 import {RouteComponentProps, withRouter, Link} from "react-router-dom";
 
@@ -21,6 +23,7 @@ const { Header, Sider, Content } = Layout;
 const TabPane = Tabs.TabPane;
 
 import './Project.css';
+import actions from "@/actions";
 
 
 type Props = {
@@ -35,6 +38,10 @@ type State = {
 @inject('managerStore')
 @observer
 class Project extends Component<Props & RouteComponentProps & FormComponentProps, State>{
+
+  handleLogout = () => {
+    actions.logout();
+  };
 
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -77,7 +84,14 @@ class Project extends Component<Props & RouteComponentProps & FormComponentProps
           </Sider>
           <Layout>
             <Header style={{ background: '#fff', padding: 0 }}>
-              <div className="title">Project {this.props.managerStore.project.title}</div>
+              <Row>
+                <Col span={20}>
+                  <div className="title">Project {this.props.managerStore.project.title}</div>
+                </Col>
+                <Col span={4}>
+                  <Button type="primary" shape="round" onClick={this.handleLogout}>Logout</Button>
+                </Col>
+              </Row>
             </Header>
             <Content style={{
               padding: 24,
@@ -100,8 +114,12 @@ class Project extends Component<Props & RouteComponentProps & FormComponentProps
                 <TabPane tab="Team" key="4">
                   <Team managerStore={this.props.managerStore} projectId={(this.props.match.params as any).projectId}/>
                 </TabPane>
-                <TabPane tab="Gantt Diagram" key="5" style={{ height : '80vh'}}><Gantt managerStore={this.props.managerStore} projectId={(this.props.match.params as any).projectId}/></TabPane>
-                <TabPane tab="Crash" key="6">Content of Tab Pane 6</TabPane>
+                <TabPane tab="Gantt Diagram" key="5" style={{ height : '80vh'}}>
+                  <Gantt managerStore={this.props.managerStore} projectId={(this.props.match.params as any).projectId}/>
+                </TabPane>
+                <TabPane tab="Crash" key="6">
+                  <Crash managerStore={this.props.managerStore} projectId={(this.props.match.params as any).projectId}/>
+                </TabPane>
               </Tabs>
             </Content>
           </Layout>

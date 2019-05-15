@@ -18,7 +18,8 @@ import {
   Form,
   Input,
   DatePicker,
-  InputNumber
+  InputNumber,
+  Button
 } from 'antd';
 
 import {CirclePicker} from 'react-color';
@@ -103,6 +104,10 @@ class ManagerHome extends Component<Props & RouteComponentProps & FormComponentP
     this.props.history.push(`/project/${projectId}`, {projectId});
   };
 
+  handleLogout = () => {
+    actions.logout();
+  };
+
   render(){
     const { getFieldDecorator } = this.props.form;
     return(
@@ -144,7 +149,14 @@ class ManagerHome extends Component<Props & RouteComponentProps & FormComponentP
           </Sider>
           <Layout>
             <Header style={{ background: '#fff', padding: 0 }}>
-              <div className="title">Home</div>
+              <Row>
+                <Col span={20}>
+                  <div className="title">Home</div>
+                </Col>
+                <Col span={4}>
+                  <Button type="primary" shape="round" onClick={this.handleLogout}>Logout</Button>
+                </Col>
+              </Row>
             </Header>
             <Content style={{
               padding: 24,

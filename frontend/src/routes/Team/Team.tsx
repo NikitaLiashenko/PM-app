@@ -154,6 +154,10 @@ class Team extends Component<Props & RouteComponentProps, State>{
     ),
   });
 
+  handleLogout = () => {
+    actions.logout();
+  };
+
   render() {
     const columns = [
       {
@@ -249,7 +253,14 @@ class Team extends Component<Props & RouteComponentProps, State>{
           </Sider>
           <Layout>
             <Header style={{ background: '#fff', padding: 0 }}>
-              <div className="title">Team</div>
+              <Row>
+                <Col span={20}>
+                  <div className="title">Team</div>
+                </Col>
+                <Col span={4}>
+                  <Button type="primary" shape="round" onClick={this.handleLogout}>Logout</Button>
+                </Col>
+              </Row>
             </Header>
             <Content style={{
               padding: 24,

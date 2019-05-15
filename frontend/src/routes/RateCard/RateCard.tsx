@@ -11,7 +11,9 @@ import {
   Typography,
   Table,
   Layout,
-  Form, Menu, Badge
+  Form,
+  Menu,
+  Badge
 } from "antd";
 import {RouteComponentProps, withRouter, Link} from 'react-router-dom';
 import {FormComponentProps} from "antd/lib/form/Form";
@@ -20,6 +22,7 @@ const {Text} = Typography;
 const {Header, Sider, Content} = Layout;
 
 import './RateCard.css';
+import actions from "@/actions";
 
 //@ts-ignore
 const EditableContext = React.createContext();
@@ -260,6 +263,11 @@ type Props = {};
 type State = {};
 
 class RateCard extends Component<Props & RouteComponentProps, State>{
+
+  handleLogout = () => {
+    actions.logout();
+  };
+
   render() {
     return(
       <Fragment>
@@ -300,7 +308,14 @@ class RateCard extends Component<Props & RouteComponentProps, State>{
           </Sider>
           <Layout>
             <Header style={{ background: '#fff', padding: 0 }}>
-              <div className="title">Rate Card</div>
+              <Row>
+                <Col span={20}>
+                  <div className="title">Rate Card</div>
+                </Col>
+                <Col span={4}>
+                  <Button type="primary" shape="round" onClick={this.handleLogout}>Logout</Button>
+                </Col>
+              </Row>
             </Header>
             <Content style={{
               padding: 24,

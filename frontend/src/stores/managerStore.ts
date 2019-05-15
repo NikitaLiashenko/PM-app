@@ -4,7 +4,7 @@ import TaskService, {Task} from '@/services/taskService';
 import WorkerService, {Worker} from '@/services/workerService';
 import RiskService, {Risk} from '@/services/riskService';
 import CalendarService, {Calendar} from '@/services/calendarService';
-import calendarActions from "@/actions/calendarActions";
+import CrashService, {Crash} from "@/services/crashService";
 
 class ManagerStore {
   @observable
@@ -36,6 +36,12 @@ class ManagerStore {
 
   @observable
   calendar : Calendar = { holidays : []};
+
+  @observable
+  projectCrash : Array<Crash> = [];
+
+  @observable
+  projectStateInCrash : Project = {};
 
   @action
   getAllUserProjects = async() => {
@@ -473,6 +479,63 @@ class ManagerStore {
   @action
   cleanWorkers = () => {
     this.team = [];
+  };
+
+  @action
+  getProjectCrash = async(projectId : string) => {
+    let response : any;
+
+    try {
+      response = await CrashService.getProjectCrash(projectId);
+    } catch(responseError) {
+      return Promise.reject(responseError.message);
+    }
+
+    runInAction(() => {
+      this.projectCrash = response;
+    });
+
+    return Promise.resolve();
+  };
+
+  @action
+  getProjectStateInCrash = async(projectId : string, crashId : string) => {
+    let response : any;
+
+    try {
+      response = await CrashService.getProjectStateInCrash(projectId, crashId);
+    } catch(responseError){
+      return Promise.reject(responseError.message);
+    }
+
+    runInAction(() => {
+      this.projectStateInCrash = response;
+    });
+
+    return Promise.resolve();
+  };
+
+  @action
+  confirmProjectCrash = async(projectId : string, crashId : string) => {
+    let response : any;
+
+    try {
+      response = await CrashService.confirmProjectCrash(projectId, crashId);
+    } catch(responseError){
+      return Promise.reject(responseError.message);
+    }
+
+    return Promise.resolve();
+  };
+
+  @action
+  cleanProjectCrash = () => {
+    this.projectCrash = [];
+  };
+
+  @action
+  cleanProjectStateInCrash = () => {
+    this.projectStateInCrash = {};
   };
 }
 
