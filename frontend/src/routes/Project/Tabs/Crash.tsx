@@ -68,10 +68,10 @@ class Crash extends Component<Props, State> {
       openCrashViewModal : true,
       crashId
     });
-    actions.cleanProjectStateInCrash();
-    actions.getProjectStateInCrash(this.props.projectId, crashId)
+    actions.manager.cleanProjectStateInCrash();
+    actions.manager.getProjectStateInCrash(this.props.projectId, crashId)
       .then(() => {
-        return actions.getProjectTeam();
+        return actions.manager.getProjectTeam();
       })
       .then(() => {
         this.setUpGantt();
@@ -185,7 +185,7 @@ class Crash extends Component<Props, State> {
         progress : Math.round(task.progress * 100) / 100
       };
 
-      actions.updateProjectTask(task.taskId, taskUpdate)
+      actions.manager.updateProjectTask(task.taskId, taskUpdate)
         .catch(console.error);
     });
 
@@ -201,7 +201,7 @@ class Crash extends Component<Props, State> {
     this.setState({
       crashConfirming : true
     });
-    actions.confirmProjectCrash(this.props.projectId, this.state.crashId)
+    actions.manager.confirmProjectCrash(this.props.projectId, this.state.crashId)
       .then(() => {
         this.setState({
           crashConfirming : false,
@@ -343,6 +343,7 @@ class Crash extends Component<Props, State> {
                           }
                         };
                       }}
+                      rowClassName={() => "clickable"}
                     ></Table>
                   </div>
                 </Col>

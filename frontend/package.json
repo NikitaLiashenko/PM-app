@@ -19,6 +19,7 @@
     "@types/styled-components": "^4.1.12",
     "antd": "^3.16.1",
     "axios": "^0.18.0",
+    "bizcharts": "^3.5.3-beta.0",
     "dhtmlx-gantt": "^6.1.4",
     "lodash": "^4.17.11",
     "mobx": "^5.9.4",

@@ -1,5 +1,5 @@
 import React, {Fragment, Component, SyntheticEvent} from 'react';
-import {ManagerStore} from '@/stores';
+import {ManagerStore, AdminStore} from '@/stores';
 import actions from '@/actions';
 import {observer} from 'mobx-react';
 import moment from 'moment';
@@ -19,14 +19,13 @@ import {
 } from 'antd';
 import BigCalendar from 'react-big-calendar'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
-import calendarActions from "@/actions/calendarActions";
 
 const {Title} = Typography;
 
 type Props = {
   holidays : Array<Holiday>,
   location : string,
-  managerStore : ManagerStore
+  store : ManagerStore | AdminStore
 };
 
 type State = {
@@ -65,7 +64,7 @@ class CalendarView extends Component<Props & FormComponentProps, State> {
           confirmLoading : true
         });
 
-        const calendar = this.props.managerStore.calendars.find(calendar => calendar.location === this.props.location);
+        const calendar = this.props.store.calendars.find(calendar => calendar.location === this.props.location);
 
         // @ts-ignore
         const holidays = [...calendar.holidays];
@@ -75,15 +74,27 @@ class CalendarView extends Component<Props & FormComponentProps, State> {
           description : values.description
         });
 
-        actions.updateLocationCalendar(this.props.location, {holidays})
-          .then(() => {
-            this.setState({
-              confirmLoading : false,
-              openEventModal : false
-            });
-            return actions.getAllCalendars()
-          })
-          .catch(console.error);
+        if(this.props.store instanceof ManagerStore) {
+          actions.manager.updateLocationCalendar(this.props.location, {holidays})
+            .then(() => {
+              this.setState({
+                confirmLoading: false,
+                openEventModal: false
+              });
+              return actions.manager.getAllCalendars()
+            })
+            .catch(console.error);
+        } else {
+          actions.admin.updateLocationCalendar(this.props.location, {holidays})
+            .then(() => {
+              this.setState({
+                confirmLoading: false,
+                openEventModal: false
+              });
+              return actions.admin.getAllCalendars()
+            })
+            .catch(console.error);
+        }
       }
     });
   }

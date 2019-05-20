@@ -287,19 +287,19 @@ class RateCard extends Component<Props & RouteComponentProps, State>{
                 </Link>
               </Menu.Item>
               <Menu.Item key="2">
-                <Link to={links.team}>
+                <Link to={links.managerTeam}>
                   <Icon type="team" />
                   <span className="menu-text">Team</span>
                 </Link>
               </Menu.Item>
               <Menu.Item key="3">
-                <Link to={links.calendar}>
+                <Link to={links.managerCalendar}>
                   <Icon type="calendar" />
                   <span className="menu-text">Calendar</span>
                 </Link>
               </Menu.Item>
               <Menu.Item key="4">
-                <Link to={links.rateCard}>
+                <Link to={links.managerRateCard}>
                   <Icon type="dollar" />
                   <span className="menu-text">Rate Card</span>
                 </Link>

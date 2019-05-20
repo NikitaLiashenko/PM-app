@@ -74,8 +74,8 @@ class Team extends Component<Props & FormComponentProps, State> {
     this.setState({
       workersLoading : true
     });
-    actions.cleanProjectTeam();
-    actions.getProjectTeam()
+    actions.manager.cleanProjectTeam();
+    actions.manager.getProjectTeam()
       .then(() => {
         if(!this.props.managerStore.projectTeam.length){
           this.setState({
@@ -202,7 +202,7 @@ class Team extends Component<Props & FormComponentProps, State> {
         this.setState({
           confirmLoading : true
         });
-        actions.prepareProjectTeam(teamParams)
+        actions.manager.prepareProjectTeam(teamParams)
           .then(() => {
             this.setState({
               confirmLoading : false,
@@ -238,7 +238,7 @@ class Team extends Component<Props & FormComponentProps, State> {
     this.setState({
       confirmTeamLoading : true
     });
-    actions.confirmProjectTeam(this.props.managerStore.projectTeam, this.props.projectId)
+    actions.manager.confirmProjectTeam(this.props.managerStore.projectTeam, this.props.projectId)
       .then(() => {
         this.setState({
           confirmTeamLoading : false,

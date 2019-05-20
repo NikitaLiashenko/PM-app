@@ -54,13 +54,13 @@ class Tasks extends Component<Props & FormComponentProps, State>{
     this.setState({
       areTasksLoading : true
     });
-    actions.cleanTasks();
-    actions.getProjectTasks(this.props.projectId)
+    actions.manager.cleanTasks();
+    actions.manager.getProjectTasks(this.props.projectId)
       .then(() => {
         this.setState({
           areTasksLoading : false
         });
-        return actions.getProjectTeam();
+        return actions.manager.getProjectTeam();
       })
       .catch(console.error);
   }
@@ -72,7 +72,7 @@ class Tasks extends Component<Props & FormComponentProps, State>{
       taskId : ''
     });
 
-    actions.getProjectTask(this.props.projectId, taskId)
+    actions.manager.getProjectTask(this.props.projectId, taskId)
       .then(() => {
         this.setState({
           isTaskLoading : false,
@@ -85,7 +85,7 @@ class Tasks extends Component<Props & FormComponentProps, State>{
   }
 
   handleTaskViewClose() {
-    actions.cleanTask();
+    actions.manager.cleanTask();
     this.setState({
       openTaskView : false,
       taskId : ''
@@ -99,16 +99,16 @@ class Tasks extends Component<Props & FormComponentProps, State>{
   }
 
   handleTaskDelete(){
-    actions.deleteProjectTask()
+    actions.manager.deleteProjectTask()
       .then(() => {
-        actions.cleanTask();
+        actions.manager.cleanTask();
         this.setState({
           taskId : '',
           areTasksLoading : true,
           openTaskView : false
         });
-        actions.cleanTasks();
-        return actions.getProjectTasks(this.props.projectId);
+        actions.manager.cleanTasks();
+        return actions.manager.getProjectTasks(this.props.projectId);
       })
       .then(() => {
         this.setState({
@@ -132,22 +132,22 @@ class Tasks extends Component<Props & FormComponentProps, State>{
           });
 
           if(this.state.taskId) {
-            actions.updateProjectTask(this.state.taskId, values)
+            actions.manager.updateProjectTask(this.state.taskId, values)
               .then(() => {
-                actions.cleanTasks();
+                actions.manager.cleanTasks();
                 this.setState({
                   openTaskModal: false,
                   areTasksLoading: true
                 });
-                return actions.getProjectTasks(this.props.projectId);
+                return actions.manager.getProjectTasks(this.props.projectId);
               })
               .then(() => {
                 this.setState({
                   areTasksLoading: false,
                   isTaskLoading: true
                 });
-                actions.cleanTask();
-                return actions.getProjectTask(this.props.projectId, this.state.taskId);
+                actions.manager.cleanTask();
+                return actions.manager.getProjectTask(this.props.projectId, this.state.taskId);
               })
               .then(() => {
                 this.setState({
@@ -163,15 +163,15 @@ class Tasks extends Component<Props & FormComponentProps, State>{
               values.predecessor = [];
             }
             utils.omitNilAndEmptyStrings(values);
-            actions.createProjectTask(values)
+            actions.manager.createProjectTask(values)
               .then(result => {
-                actions.cleanTasks();
+                actions.manager.cleanTasks();
                 this.setState({
                   taskId : result.taskId,
                   openTaskModal: false,
                   areTasksLoading: true
                 });
-                return actions.getProjectTasks(this.props.projectId);
+                return actions.manager.getProjectTasks(this.props.projectId);
               })
               .then(() => {
                 this.setState({

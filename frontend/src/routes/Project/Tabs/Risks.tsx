@@ -55,8 +55,8 @@ class Risks extends Component<Props & FormComponentProps, State> {
     this.setState({
       areRisksLoading : true
     });
-    actions.cleanRisks();
-    actions.getProjectRisks(this.props.projectId)
+    actions.manager.cleanRisks();
+    actions.manager.getProjectRisks(this.props.projectId)
       .then(() => {
         this.setState({
           areRisksLoading : false
@@ -72,7 +72,7 @@ class Risks extends Component<Props & FormComponentProps, State> {
       riskId : ''
     });
 
-    actions.getProjectRisk(this.props.projectId, riskId)
+    actions.manager.getProjectRisk(this.props.projectId, riskId)
       .then(() => {
         this.setState({
           isRiskLoading : false,
@@ -83,7 +83,7 @@ class Risks extends Component<Props & FormComponentProps, State> {
   }
 
   handleRiskViewClose(){
-    actions.cleanRisk();
+    actions.manager.cleanRisk();
     this.setState({
       openRiskView : false,
       riskId : ''
@@ -97,16 +97,16 @@ class Risks extends Component<Props & FormComponentProps, State> {
   }
 
   handleRiskDelete(){
-    actions.deleteProjectRisk()
+    actions.manager.deleteProjectRisk()
       .then(() => {
-        actions.cleanRisk();
+        actions.manager.cleanRisk();
         this.setState({
           riskId : '',
           areRisksLoading : true,
           openRiskView : false
         });
-        actions.cleanRisks();
-        return actions.getProjectRisks(this.props.projectId);
+        actions.manager.cleanRisks();
+        return actions.manager.getProjectRisks(this.props.projectId);
       })
       .then(() => {
         this.setState({
@@ -126,43 +126,43 @@ class Risks extends Component<Props & FormComponentProps, State> {
           });
 
           if(this.state.riskId){
-            actions.updateProjectRisk(this.state.riskId, values)
+            actions.manager.updateProjectRisk(this.state.riskId, values)
               .then(() => {
-                actions.cleanRisks();
+                actions.manager.cleanRisks();
                 this.setState({
                   openRiskModal : false,
                   areRisksLoading : true
                 });
-                return actions.getProjectRisks(this.props.projectId)
+                return actions.manager.getProjectRisks(this.props.projectId)
               })
               .then(() => {
                 this.setState({
                   areRisksLoading : false,
                   isRiskLoading : true
                 });
-                actions.cleanRisk();
-                return actions.getProjectRisk(this.props.projectId, this.state.riskId);
+                actions.manager.cleanRisk();
+                return actions.manager.getProjectRisk(this.props.projectId, this.state.riskId);
               })
               .then(() => {
                 this.setState({
                   isRiskLoading : false,
                   confirmLoading : false
-                })
+                });
                 this.props.form.resetFields();
               })
               .catch(console.error);
           } else {
             utils.omitNilAndEmptyStrings(values);
-            actions.createProjectRisk(values)
+            actions.manager.createProjectRisk(values)
               .then(result => {
-                actions.cleanRisks();
+                actions.manager.cleanRisks();
                 this.setState({
                   riskId : result.riskId,
                   openRiskModal : false,
                   areRisksLoading : true
                 });
 
-                return actions.getProjectRisks(this.props.projectId);
+                return actions.manager.getProjectRisks(this.props.projectId);
               })
               .then(() => {
                 this.setState({

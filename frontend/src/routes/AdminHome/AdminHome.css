@@ -1,0 +1,80 @@
+.logo {
+    height: 32px;
+    margin: 16px;
+    font-size : 20px;
+    color: white;
+}
+
+.title {
+    height: 32px;
+    margin: 0 20px 0 20px;
+    font-size : 20px;
+}
+
+.menu-text{
+    font-size: 18px;
+}
+
+.chart-card-footer {
+    margin-top: 8px;
+    padding-top: 9px;
+    border-top: 1px solid #e8e8e8;
+}
+
+.chart-card-footer-text{
+    font-size: 14px;
+    line-height: 22px;
+}
+
+.ranking-container {
+    height: 400px;
+    margin: 16px;
+}
+
+.ranking-list {
+    margin: 25px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.ranking-list > li {
+    display: flex;
+    align-items: center;
+    margin-top: 16px;
+}
+
+.ranking-list > li > span {
+    font-size: 14px;
+    line-height: 22px;
+}
+
+.ranking-item-number {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-top: 1.5px;
+    margin-right: 16px;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 20px;
+    text-align: center;
+    border-radius: 20px;
+}
+
+.ranking-item-number.top-3 {
+    color: #fff;
+    background-color: #314659;
+}
+
+.ranking-item-title {
+    flex: 1;
+    margin-right: 8px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.create-statistic-card {
+    border-style: dashed;
+    cursor: pointer;
+}

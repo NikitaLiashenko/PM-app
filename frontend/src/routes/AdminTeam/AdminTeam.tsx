@@ -1,4 +1,4 @@
-import {ManagerStore} from '@/stores';
+import {AdminStore} from '@/stores';
 import links from '@/routes/urls';
 import actions from '@/actions';
 import React, {Fragment, Component, SyntheticEvent} from 'react';
@@ -23,11 +23,11 @@ import moment from 'moment';
 const {Text} = Typography;
 const {Header, Sider, Content} = Layout;
 
-import './Team.css';
+import './AdminTeam.css';
 import {Project} from "@/services/projectService";
 
 type Props = {
-  managerStore : ManagerStore
+  adminStore : AdminStore
 };
 
 enum RowSize {
@@ -45,7 +45,7 @@ type State = {
 
 const expandedRowRender = (record : any) => <p>{record.skills.join(', ')}</p>;
 
-@inject('managerStore')
+@inject('adminStore')
 @observer
 class Team extends Component<Props & RouteComponentProps, State>{
   state = {
@@ -66,9 +66,9 @@ class Team extends Component<Props & RouteComponentProps, State>{
     this.setState({
       workersLoading : true
     });
-    actions.manager.cleanWorkers();
-    actions.manager.getAllProjects()
-      .then(() => actions.manager.getAllWorkers())
+    actions.admin.cleanWorkers();
+    actions.admin.getAllProjects()
+      .then(() => actions.admin.getAllWorkers())
       .then(() => {
         this.setState({
           workersLoading : false
@@ -196,7 +196,7 @@ class Team extends Component<Props & RouteComponentProps, State>{
             return '';
           }
           console.log(record.firstName, record.project.projectId);
-          const project = this.props.managerStore.projectsList.find(project => project.projectId === record.project.projectId);
+          const project = this.props.adminStore.projects.find(project => project.projectId === record.project.projectId);
           if(!project){
             return '';
           }
@@ -226,27 +226,21 @@ class Team extends Component<Props & RouteComponentProps, State>{
             <div className="logo">ProPlanner</div>
             <Menu mode="inline" theme="dark" defaultSelectedKeys={['2']}>
               <Menu.Item key="1">
-                <Link to={links.managerHome}>
+                <Link to={links.adminHome}>
                   <Icon type="home" />
                   <span className="menu-text">Home</span>
                 </Link>
               </Menu.Item>
               <Menu.Item key="2">
-                <Link to={links.managerTeam}>
+                <Link to={links.adminTeam}>
                   <Icon type="team" />
                   <span className="menu-text">Team</span>
                 </Link>
               </Menu.Item>
               <Menu.Item key="3">
-                <Link to={links.managerCalendar}>
+                <Link to={links.adminCalendar}>
                   <Icon type="calendar" />
                   <span className="menu-text">Calendar</span>
-                </Link>
-              </Menu.Item>
-              <Menu.Item key="4">
-                <Link to={links.managerRateCard}>
-                  <Icon type="dollar" />
-                  <span className="menu-text">Rate Card</span>
                 </Link>
               </Menu.Item>
             </Menu>
@@ -277,7 +271,7 @@ class Team extends Component<Props & RouteComponentProps, State>{
                           <Row>
                             <Col span={23}>
                               <Text className="projects-title">Team</Text>
-                              <Badge count={this.props.managerStore.team.length}
+                              <Badge count={this.props.adminStore.workers.length}
                                      style={{
                                        backgroundColor: '#fff',
                                        color: '#999',
@@ -302,7 +296,7 @@ class Team extends Component<Props & RouteComponentProps, State>{
                             //@ts-ignore
                             size={this.state.tableRowSize}
                             columns={columns}
-                            dataSource={this.props.managerStore.team}
+                            dataSource={this.props.adminStore.workers}
                             rowKey={record => record.username as string}
                           ></Table>
                         </div>

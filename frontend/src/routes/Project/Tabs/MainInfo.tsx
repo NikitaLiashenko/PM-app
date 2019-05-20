@@ -45,8 +45,8 @@ class MainInfo extends Component<Props & FormComponentProps, State> {
   };
 
   componentWillMount(): void {
-    actions.cleanProject();
-    actions.getProject(this.props.projectId)
+    actions.manager.cleanProject();
+    actions.manager.getProject(this.props.projectId)
       .catch(console.error);
   }
 
@@ -68,7 +68,7 @@ class MainInfo extends Component<Props & FormComponentProps, State> {
           utils.omitNilAndEmptyStrings(values);
 
           console.log(values);
-          actions.updateProject(values, this.props.projectId)
+          actions.manager.updateProject(values, this.props.projectId)
             .then(() => {
               this.setState({
                 isUpdating : false
@@ -88,7 +88,7 @@ class MainInfo extends Component<Props & FormComponentProps, State> {
     this.setState({
       isCriticalPathLoading : true
     });
-    actions.countCriticalPath()
+    actions.manager.countCriticalPath()
       .then(() => {
         this.setState({
           isCriticalPathCounted : true,
@@ -106,16 +106,16 @@ class MainInfo extends Component<Props & FormComponentProps, State> {
     this.setState({
       areProjectDatesLoading : true
     });
-    actions.getProjectTeam()
+    actions.manager.getProjectTeam()
       .then(() => {
-        return actions.countProjectDates();
+        return actions.manager.countProjectDates();
       })
       .then(() => {
         this.setState({
           areProjectDatesCounted : true,
           areProjectDatesLoading : false
         });
-        return actions.getProject(this.props.projectId as string);
+        return actions.manager.getProject(this.props.projectId as string);
       })
       .catch(error => {
         console.error(error);

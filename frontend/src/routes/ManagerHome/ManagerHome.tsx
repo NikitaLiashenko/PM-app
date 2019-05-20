@@ -49,7 +49,7 @@ class ManagerHome extends Component<Props & RouteComponentProps & FormComponentP
   };
 
   componentWillMount(): void {
-    actions.getAllProjects()
+    actions.manager.getAllProjects()
     .catch(error => {
       console.error(error);
     });
@@ -63,7 +63,7 @@ class ManagerHome extends Component<Props & RouteComponentProps & FormComponentP
         this.setState({
           confirmLoading : true
         });
-        actions.createNewProject({
+        actions.manager.createNewProject({
           title : values.title,
           description : values.description,
           startDate : values.startDate.format('YYYY-MM-DD'),
@@ -128,19 +128,19 @@ class ManagerHome extends Component<Props & RouteComponentProps & FormComponentP
                 </Link>
               </Menu.Item>
               <Menu.Item key="2">
-                <Link to={links.team}>
+                <Link to={links.managerTeam}>
                 <Icon type="team" />
                 <span className="menu-text">Team</span>
                 </Link>
               </Menu.Item>
               <Menu.Item key="3">
-                <Link to={links.calendar}>
+                <Link to={links.managerCalendar}>
                 <Icon type="calendar" />
                 <span className="menu-text">Calendar</span>
                 </Link>
               </Menu.Item>
               <Menu.Item key="4">
-                <Link to={links.rateCard}>
+                <Link to={links.managerRateCard}>
                   <Icon type="dollar" />
                   <span className="menu-text">Rate Card</span>
                 </Link>

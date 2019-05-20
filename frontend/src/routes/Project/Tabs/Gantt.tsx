@@ -6,21 +6,39 @@ import 'dhtmlx-gantt';
 import 'dhtmlx-gantt/codebase/dhtmlxgantt.css';
 import 'dhtmlx-gantt/codebase/ext/dhtmlxgantt_marker';
 import {Task} from '@/services/taskService';
+import {
+  Col,
+  Divider,
+  Row,
+  Typography,
+  Spin
+} from "antd";
+
+const {Text} = Typography;
 
 type Props = {
   managerStore : ManagerStore,
   projectId : string
 };
 
-type State = {};
+type State = {
+  isGanttLoading : boolean
+};
 
 @observer
 class Gantt extends Component<Props, State>{
   ganttContainer : any;
 
+  state = {
+    isGanttLoading : false
+  };
+
   componentDidMount(){
-    actions.getProjectTasks(this.props.projectId)
-      .then(() => actions.getProjectTeam())
+    this.setState({
+      isGanttLoading : true
+    });
+    actions.manager.getProjectTasks(this.props.projectId)
+      .then(() => actions.manager.getProjectTeam())
       .then(() => {
         gantt.config.xml_date = '%Y-%m-%d';
         gantt.init(this.ganttContainer);
@@ -120,20 +138,53 @@ class Gantt extends Component<Props, State>{
             progress : Math.round(task.progress * 100) / 100
           };
 
-          actions.updateProjectTask(task.taskId, taskUpdate)
+          actions.manager.updateProjectTask(task.taskId, taskUpdate)
             .catch(console.error);
         });
 
         gantt.parse({data, links});
+
+        this.setState({
+          isGanttLoading : false
+        })
       })
-      .catch(console.error);
+      .catch(error => {
+        console.error(error);
+        this.setState({
+          isGanttLoading : false
+        })
+      });
 
   }
 
   render() {
     return(
-      <div style={{ height : '100%', width : '100%'}} ref={input => (this.ganttContainer = input)}>
-      </div>
+      <Row>
+        <Col span={24}>
+          <div className="content-container">
+            <Row type="flex" justify="space-around" align="top" className="full-height">
+              <Col span={18} style={{height : '100%'}}>
+                <div style={{height : '100%'}}>
+                  <Row>
+                    <Col span={23}>
+                      <Row>
+                        <Col span={3}>
+                          <Text className="projects-title">Gantt Chart</Text>
+                        </Col>
+                        <Col span={1}>
+                          <Spin style={{display : this.state.isGanttLoading ? 'block' : 'none', marginTop : 5}}></Spin>
+                        </Col>
+                      </Row>
+                    </Col>
+                  </Row>
+                  <Divider />
+                  <div style={{ height : '100%', width : '100%'}} ref={input => (this.ganttContainer = input)}></div>
+                </div>
+              </Col>
+            </Row>
+          </div>
+        </Col>
+      </Row>
     );
   }
 }

@@ -6,10 +6,12 @@ export default {
     signup : '/signup',
 
     managerHome : '/manager/home',
-    project : '/project/:projectId',
-    calendar : '/calendar',
-    team : '/team',
-    rateCard : '/rates',
+    managerProject : '/manager/project/:projectId',
+    managerCalendar : '/manager/calendar',
+    managerTeam : '/manager/team',
+    managerRateCard : '/manager/rates',
 
-    adminHome : '/admin/home'
+    adminHome : '/admin/home',
+    adminTeam : '/admin/team',
+    adminCalendar : '/admin/calendar'
 };

@@ -8,6 +8,10 @@ import Project from '@/routes/Project/Project';
 import Calendar from '@/routes/Calendar/Calendar';
 import Team from '@/routes/Team/Team';
 import RateCard from '@/routes/RateCard/RateCard';
+
+import AdminHome from '@/routes/AdminHome/AdminHome';
+import AdminTeam from '@/routes/AdminTeam/AdminTeam';
+import AdminCalendar from '@/routes/AdminCalendar/AdminCalendar';
 // import RootRedirect from '@/routes/RootRedirect';
 import { BrowserRouter, Route, Switch} from 'react-router-dom';
 import PrivateRoute from '@/routes/PrivateRoute';
@@ -24,16 +28,22 @@ class App extends Component {
               <Route exact={true} path={links.signin} component={Login}/>
               <Route exact={true} path={links.signup} component={Register}/>
 
-              {/*<PrivateRoute role="Manager" path={links.managerHome} component={ManagerHome}/>*/}
-              {/*<PrivateRoute role="Manager" path={links.project} component={Project}/>*/}
-              {/*<PrivateRoute role="Manager" path={links.calendar} component={Calendar}/>*/}
-              {/*<PrivateRoute role="Manager" path={links.team} component={Team}/>*/}
-              {/*<PrivateRoute role="Manager" path={links.rateCard} component={RateCard}/>*/}
-              <Route exact={true} path={links.managerHome} component={ManagerHome}/>
-              <Route exact={true} path={links.project} component={Project}/>
-              <Route exact={true} path={links.calendar} component={Calendar}/>
-              <Route exact={true} path={links.team} component={Team}/>
-              <Route exact={true} path={links.rateCard} component={RateCard}/>
+              <PrivateRoute role="Manager" path={links.managerHome} component={ManagerHome}/>
+              <PrivateRoute role="Manager" path={links.managerProject} component={Project}/>
+              <PrivateRoute role="Manager" path={links.managerCalendar} component={Calendar}/>
+              <PrivateRoute role="Manager" path={links.managerTeam} component={Team}/>
+              <PrivateRoute role="Manager" path={links.managerRateCard} component={RateCard}/>
+              {/*<Route exact={true} path={links.managerHome} component={ManagerHome}/>*/}
+              {/*<Route exact={true} path={links.project} component={Project}/>*/}
+              {/*<Route exact={true} path={links.calendar} component={Calendar}/>*/}
+              {/*<Route exact={true} path={links.team} component={Team}/>*/}
+              {/*<Route exact={true} path={links.rateCard} component={RateCard}/>*/}
+
+              {/*<PrivateRoute role="Admin" path={links.adminHome} component={AdminHome}/>*/}
+              <Route exact={true} path={links.adminHome} component={AdminHome}/>
+              <Route exact={true} path={links.adminTeam} component={AdminTeam}/>
+              <Route exact={true} path={links.adminCalendar} component={AdminCalendar}/>
+
               <Route exact={true} path={links.notFound} component={NotFound}/>
             </Switch>
           </BrowserRouter>

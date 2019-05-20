@@ -1,4 +1,4 @@
-import {ManagerStore} from '@/stores';
+import {AdminStore} from '@/stores';
 import links from '@/routes/urls';
 import actions from '@/actions';
 import React, {Fragment, Component} from 'react';
@@ -11,7 +11,7 @@ import {
   Tabs,
   Button, Col, Row
 } from 'antd';
-import CalendarView from './CalendarView';
+import CalendarView from '../Calendar/CalendarView';
 
 import {RouteComponentProps, withRouter, Link} from "react-router-dom";
 
@@ -19,18 +19,18 @@ const {Header, Sider, Content} = Layout;
 const {Text} = Typography;
 const TabPane = Tabs.TabPane;
 
-import './Calendar.css';
+import './AdminCalendar.css';
 
 type Props = {
-  managerStore : ManagerStore
+  adminStore : AdminStore
 };
 
-@inject('managerStore')
+@inject('adminStore')
 @observer
 class Calendar extends Component<Props & RouteComponentProps> {
 
   componentWillMount(): void {
-    actions.manager.getAllCalendars()
+    actions.admin.getAllCalendars()
       .catch(console.error);
   }
 
@@ -51,27 +51,21 @@ class Calendar extends Component<Props & RouteComponentProps> {
             <div className="logo">ProPlanner</div>
             <Menu mode="inline" theme="dark" defaultSelectedKeys={['3']}>
               <Menu.Item key="1">
-                <Link to={links.managerHome}>
+                <Link to={links.adminHome}>
                   <Icon type="home" />
                   <span className="menu-text">Home</span>
                 </Link>
               </Menu.Item>
               <Menu.Item key="2">
-                <Link to={links.managerTeam}>
+                <Link to={links.adminTeam}>
                   <Icon type="team" />
                   <span className="menu-text">Team</span>
                 </Link>
               </Menu.Item>
               <Menu.Item key="3">
-                <Link to={links.managerCalendar}>
+                <Link to={links.adminCalendar}>
                   <Icon type="calendar" />
                   <span className="menu-text">Calendar</span>
-                </Link>
-              </Menu.Item>
-              <Menu.Item key="4">
-                <Link to={links.managerRateCard}>
-                  <Icon type="dollar" />
-                  <span className="menu-text">Rate Card</span>
                 </Link>
               </Menu.Item>
             </Menu>
@@ -94,12 +88,12 @@ class Calendar extends Component<Props & RouteComponentProps> {
             }}
             >
               <Tabs defaultActiveKey="1">
-                {this.props.managerStore.calendars.length ?
-                  this.props.managerStore.calendars.map((calendar, i) =>
-                  <TabPane tab={calendar.location} key={`${i + 1}`} style={{ height : '80vh'}}>
-                    <CalendarView store={this.props.managerStore} holidays={calendar.holidays} location={calendar.location as string}/>
-                  </TabPane>):
-                ''}
+                {this.props.adminStore.calendars.length ?
+                  this.props.adminStore.calendars.map((calendar, i) =>
+                    <TabPane tab={calendar.location} key={`${i + 1}`} style={{ height : '80vh'}}>
+                      <CalendarView store={this.props.adminStore} holidays={calendar.holidays} location={calendar.location as string}/>
+                    </TabPane>):
+                  ''}
               </Tabs>
             </Content>
           </Layout>
