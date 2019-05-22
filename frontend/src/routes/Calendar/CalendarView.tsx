@@ -118,7 +118,7 @@ class CalendarView extends Component<Props & FormComponentProps, State> {
           <Col span={24}>
             <div className="content-container">
               <Row type="flex" justify="space-around" align="top" className="full-height">
-                <Col span={12} style={{height : '80%'}}>
+                <Col span={24} style={{height : '80%'}}>
                   <BigCalendar
                     selectable
                     localizer={BigCalendar.momentLocalizer(moment)}

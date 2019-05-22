@@ -38,6 +38,11 @@ class Calendar extends Component<Props & RouteComponentProps> {
     actions.logout();
   };
 
+  onTabEdit = (targetKey : any, action : any) => {
+    console.log(targetKey);
+    console.log(action);
+  };
+
   render() {
     return (
       <Fragment>
@@ -87,14 +92,22 @@ class Calendar extends Component<Props & RouteComponentProps> {
               backgroundColor : 'white'
             }}
             >
-              <Tabs defaultActiveKey="1">
-                {this.props.adminStore.calendars.length ?
-                  this.props.adminStore.calendars.map((calendar, i) =>
-                    <TabPane tab={calendar.location} key={`${i + 1}`} style={{ height : '80vh'}}>
-                      <CalendarView store={this.props.adminStore} holidays={calendar.holidays} location={calendar.location as string}/>
-                    </TabPane>):
-                  ''}
-              </Tabs>
+              <Row type="flex" justify="space-around" align="top" className="full-width">
+                <Col span={16}>
+                  <Tabs
+                    defaultActiveKey="1"
+                    type="editable-card"
+                    onEdit={this.onTabEdit}
+                  >
+                    {this.props.adminStore.calendars.length ?
+                      this.props.adminStore.calendars.map((calendar, i) =>
+                        <TabPane tab={calendar.location} key={`${i + 1}`} style={{ height : '80vh'}}>
+                          <CalendarView store={this.props.adminStore} holidays={calendar.holidays} location={calendar.location as string}/>
+                        </TabPane>):
+                      ''}
+                  </Tabs>
+                </Col>
+              </Row>
             </Content>
           </Layout>
         </Layout>
