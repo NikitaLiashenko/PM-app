@@ -84,7 +84,7 @@ functions:
     runtime: nodejs8.10
     memorySize: 128
     timeout: 30
-    role: projectsDynamoReadRole
+    role: projectsUsersDynamoReadWriteRole
     events:
       - http:
           path: /project
@@ -105,7 +105,7 @@ functions:
     runtime: nodejs8.10
     memorySize: 128
     timeout: 30
-    role: projectsDynamoReadRole
+    role: projectsUsersDynamoReadWriteRole
     events:
       - http:
           path: /project/{projectId}
@@ -126,7 +126,7 @@ functions:
     runtime: nodejs8.10
     memorySize: 128
     timeout: 30
-    role: projectsDynamoReadWriteRole
+    role: projectsUsersDynamoReadWriteRole
     events:
       - http:
           path: /project
@@ -147,7 +147,7 @@ functions:
     runtime: nodejs8.10
     memorySize: 128
     timeout: 30
-    role: projectsDynamoReadWriteRole
+    role: projectsUsersDynamoReadWriteRole
     events:
       - http:
           path: /project/{projectId}
@@ -813,6 +813,7 @@ resources:
                 - Effect: Allow
                   Action:
                     - dynamodb:Query
+                    - dynamodb:Scan
                   Resource:
                     - 'Fn::Join':
                         - ':'
@@ -866,6 +867,7 @@ resources:
                 - Effect: Allow
                   Action:
                     - dynamodb:Query
+                    - dynamodb:Scan
                     - dynamodb:PutItem
                     - dynamodb:UpdateItem
                   Resource:
@@ -1257,6 +1259,7 @@ resources:
                 - Effect: Allow
                   Action:
                     - dynamodb:Query
+                    - dynamodb:Scan
                     - dynamodb:PutItem
                     - dynamodb:UpdateItem
                   Resource:

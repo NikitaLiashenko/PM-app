@@ -45,11 +45,12 @@ module.exports.handler = async(event) => {
     return response;
   }
 
-  const {updateString, expressionAttributeValues} = utils.prepareUpdateStringAndObject(body);
+  const {updateString, expressionAttributeValues, expressionAttributeNames} = utils.prepareUpdateStringAndObject(body);
 
   try {
     const updatedObject = await dynamoHelper.updateWorker({
       UpdateExpression: updateString,
+      ExpressionAttributeNames : expressionAttributeNames,
       ExpressionAttributeValues: expressionAttributeValues,
       Key: {
         username : workerId

@@ -5,7 +5,7 @@ const AWS = require('aws-sdk');
 const _ = require('lodash');
 const dynamo = new AWS.DynamoDB.DocumentClient();
 
-const getAllProjects = async(username) => {
+const getAllProjectsForUser = async(username) => {
   const params = {
     TableName : config.get('aws.dynamodb.projects.table'),
     KeyConditionExpression : 'username = :username',
@@ -18,6 +18,29 @@ const getAllProjects = async(username) => {
   return await dynamo.query(params).promise()
     .then(result => result.Items)
     .then(projects => projects.map(item => _.omit(item, ['username'])));
+};
+
+const getAllProjects = async() => {
+  const params = {
+    TableName : config.get('aws.dynamodb.projects.table')
+  };
+
+  return await dynamo.scan(params).promise()
+    .then(result => result.Items)
+    .then(projects => projects.map(item => _.omit(item, ['username'])));
+};
+
+const getUser = async(username) => {
+  const params = {
+    TableName : config.get('aws.dynamodb.users.table'),
+    KeyConditionExpression : 'username = :username',
+    ExpressionAttributeValues : {
+      ':username' : username
+    }
+  };
+
+  return await dynamo.query(params).promise()
+    .then(result => result.Items[0]);
 };
 
 const getProject = async(username, projectId) => {
@@ -58,8 +81,10 @@ const updateProject = async(updateParams) => {
 };
 
 module.exports = {
+  getAllProjectsForUser,
   getAllProjects,
   createProject,
   getProject,
-  updateProject
+  updateProject,
+  getUser
 };

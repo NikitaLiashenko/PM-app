@@ -4,9 +4,11 @@ function prepareUpdateStringAndObject(inputObject){
   let updateString = 'set ';
 
   const expressionAttributeValues = {};
+  const expressionAttributeNames = {};
 
   Object.keys(inputObject).forEach(key => {
-    updateString += `${key}= :${key},`;
+    updateString += `#${key}= :${key},`;
+    expressionAttributeNames[`#${key}`] = key;
     expressionAttributeValues[`:${key}`] = inputObject[key];
   });
 
@@ -14,7 +16,8 @@ function prepareUpdateStringAndObject(inputObject){
 
   return {
     updateString,
-    expressionAttributeValues
+    expressionAttributeValues,
+    expressionAttributeNames
   }
 }
 

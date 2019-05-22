@@ -10,7 +10,7 @@ const ajv = new AJV({schemas : [updateProjectSchema]});
 module.exports.handler = async(event) => {
   const body = JSON.parse(event.body);
   const projectId = event.pathParameters.projectId;
-  const username = userHelper.getUserData(event);
+  const user = await userHelper.getUserData(event);
 
   const isValid = ajv.validate('updateProject', body);
 
@@ -36,7 +36,7 @@ module.exports.handler = async(event) => {
   let project;
 
   try {
-    project = await dynamoHelper.getProject(username, projectId);
+    project = await dynamoHelper.getProject(user.username, projectId);
   } catch(dynamoError){
     console.error(dynamoError.message);
 

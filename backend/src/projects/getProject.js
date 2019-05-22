@@ -6,10 +6,10 @@ const _ = require('lodash');
 module.exports.handler = async(event) => {
   const projectId = event.pathParameters.projectId;
 
-  const username = userHelper.getUserData(event);
+  const user = await userHelper.getUserData(event);
 
   try {
-    const project = await dynamoHelper.getProject(username, projectId);
+    const project = await dynamoHelper.getProject(user.username, projectId);
 
     if(!project) {
       return {

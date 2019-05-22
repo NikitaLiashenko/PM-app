@@ -8,7 +8,7 @@ const ajv = new AJV({schemas : [createProjectSchema]});
 
 module.exports.handler = async(event) => {
   const body = JSON.parse(event.body);
-  const username = userHelper.getUserData(event);
+  const user = await userHelper.getUserData(event);
 
   const isValid = ajv.validate('createProject', body);
 
@@ -35,7 +35,7 @@ module.exports.handler = async(event) => {
     {},
     {
       projectId : uuid(),
-      username
+      username : user.username
     },
     body
   );

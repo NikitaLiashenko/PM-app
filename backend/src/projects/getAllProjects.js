@@ -4,31 +4,61 @@ const dynamoHelper = require('./helpers/dynamoHelper');
 
 module.exports.handler = async(event) => {
 
-  const username = userHelper.getUserData(event);
+  const user = await userHelper.getUserData(event);
 
-  try {
-    const projects = await dynamoHelper.getAllProjects(username);
+  console.log(user);
+  if(user.role === 'Manager') {
 
-    return {
-      statusCode : 200,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Credentials': true,
-      },
-      body : JSON.stringify(projects)
-    };
-  } catch(dynamoError){
-    console.error(dynamoError);
+    try {
+      const projects = await dynamoHelper.getAllProjectsForUser(user.username);
 
-    return {
-      statusCode : 500,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Credentials': true,
-      },
-      body : JSON.stringify({
-        message: dynamoError.message
-      })
-    };
+      return {
+        statusCode: 200,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Credentials': true,
+        },
+        body: JSON.stringify(projects)
+      };
+    } catch (dynamoError) {
+      console.error(dynamoError);
+
+      return {
+        statusCode: 500,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Credentials': true,
+        },
+        body: JSON.stringify({
+          message: dynamoError.message
+        })
+      };
+    }
+  } else {
+    try {
+      const projects = await dynamoHelper.getAllProjects();
+
+      return {
+        statusCode: 200,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Credentials': true,
+        },
+        body: JSON.stringify(projects)
+      };
+    } catch (dynamoError) {
+      console.error(dynamoError);
+
+      return {
+        statusCode: 500,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Credentials': true,
+        },
+        body: JSON.stringify({
+          message: dynamoError.message
+        })
+      };
+    }
   }
 };
