@@ -187,11 +187,10 @@ class ManagerHome extends Component<Props & RouteComponentProps & FormComponentP
                                 <div key={i}>
                                   <Card className="project-card"
                                         bodyStyle={{
-                                          // height : '180px',
                                           cursor : 'pointer'
                                         }}
                                         onClick={() => this.handleOpenProject(element.projectId)}
-                                        cover={<img alt="example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />}
+                                        cover={<img alt="example" src={`../${i}.jpg`} style={{height : '120px', width : '190px'}}/>}
                                         actions={[<Icon type="setting" />, <Icon type="edit" />, <Icon type="ellipsis" />]}
                                   >
                                     <Card.Meta
