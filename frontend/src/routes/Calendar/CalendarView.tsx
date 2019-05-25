@@ -81,9 +81,13 @@ class CalendarView extends Component<Props & FormComponentProps, State> {
                 confirmLoading: false,
                 openEventModal: false
               });
+              this.props.form.resetFields();
               return actions.manager.getAllCalendars()
             })
-            .catch(console.error);
+            .catch(error => {
+              console.error(error);
+              this.props.form.resetFields();
+            });
         } else {
           actions.admin.updateLocationCalendar(this.props.location, {holidays})
             .then(() => {
@@ -91,9 +95,13 @@ class CalendarView extends Component<Props & FormComponentProps, State> {
                 confirmLoading: false,
                 openEventModal: false
               });
+              this.props.form.resetFields();
               return actions.admin.getAllCalendars()
             })
-            .catch(console.error);
+            .catch(error => {
+              console.error(error);
+              this.props.form.resetFields();
+            });
         }
       }
     });

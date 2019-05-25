@@ -93,6 +93,7 @@ class Tasks extends Component<Props & FormComponentProps, State>{
   }
 
   handleTaskEdit(){
+    this.props.form.resetFields();
     this.setState({
       openTaskModal : true
     })
@@ -126,37 +127,34 @@ class Tasks extends Component<Props & FormComponentProps, State>{
     if(this.props.form.isFieldsTouched()) {
       this.props.form.validateFields((err, values) => {
         if(!err){
-          console.log(JSON.stringify(values));
           this.setState({
             confirmLoading : true
           });
-
           if(this.state.taskId) {
             actions.manager.updateProjectTask(this.state.taskId, values)
               .then(() => {
-                actions.manager.cleanTasks();
+                actions.manager.cleanTask();
                 this.setState({
                   openTaskModal: false,
-                  areTasksLoading: true
-                });
-                return actions.manager.getProjectTasks(this.props.projectId);
-              })
-              .then(() => {
-                this.setState({
-                  areTasksLoading: false,
+                  areTasksLoading: true,
                   isTaskLoading: true
                 });
-                actions.manager.cleanTask();
-                return actions.manager.getProjectTask(this.props.projectId, this.state.taskId);
+                return Promise.all([
+                  actions.manager.getProjectTasks(this.props.projectId),
+                  actions.manager.getProjectTask(this.props.projectId, this.state.taskId)
+                ]);
               })
               .then(() => {
                 this.setState({
                   isTaskLoading: false,
-                  confirmLoading: false
-                })
+                  confirmLoading: false,
+                  areTasksLoading: false
+                });
+                this.props.form.resetFields();
               })
               .catch(error => {
                 console.error(error);
+                this.props.form.resetFields();
               });
           } else {
             if(!values.predecessor){
@@ -164,10 +162,9 @@ class Tasks extends Component<Props & FormComponentProps, State>{
             }
             utils.omitNilAndEmptyStrings(values);
             actions.manager.createProjectTask(values)
-              .then(result => {
+              .then(() => {
                 actions.manager.cleanTasks();
                 this.setState({
-                  taskId : result.taskId,
                   openTaskModal: false,
                   areTasksLoading: true
                 });
@@ -182,6 +179,7 @@ class Tasks extends Component<Props & FormComponentProps, State>{
               })
               .catch(error => {
                 console.error(error);
+                this.props.form.resetFields();
               });
           }
         }
@@ -347,6 +345,7 @@ class Tasks extends Component<Props & FormComponentProps, State>{
           </Col>
         </Row>
 
+        {this.state.openTaskModal &&
         <Modal
           title={this.props.managerStore.task.taskId ? 'Edit task' : 'Create task'}
           centered
@@ -356,8 +355,8 @@ class Tasks extends Component<Props & FormComponentProps, State>{
           confirmLoading={this.state.confirmLoading}
           okText={this.props.managerStore.task.taskId ? 'Update' : 'Create'}
           bodyStyle={{
-            height : '60vh',
-            overflowY : 'scroll'
+            height: '60vh',
+            overflowY: 'scroll'
           }}
         >
           <Form layout="vertical">
@@ -370,9 +369,9 @@ class Tasks extends Component<Props & FormComponentProps, State>{
                       message: 'Please input the task summary!'
                     }
                   ],
-                  initialValue : this.props.managerStore.task.summary
+                  initialValue: this.props.managerStore.task.summary
                 })(
-                  <Input />
+                  <Input/>
                 ) :
                 getFieldDecorator('summary', {
                   rules: [
@@ -382,7 +381,7 @@ class Tasks extends Component<Props & FormComponentProps, State>{
                     }
                   ]
                 })(
-                  <Input />
+                  <Input/>
                 )
               }
             </Form.Item>
@@ -395,9 +394,9 @@ class Tasks extends Component<Props & FormComponentProps, State>{
                       message: 'Please input the task minimum estimate!'
                     }
                   ],
-                  initialValue : this.props.managerStore.task.estimateMin
+                  initialValue: this.props.managerStore.task.estimateMin
                 })(
-                  <InputNumber min={0} className="full-width" />
+                  <InputNumber min={0} className="full-width"/>
                 ) :
                 getFieldDecorator('estimateMin', {
                   rules: [
@@ -407,7 +406,7 @@ class Tasks extends Component<Props & FormComponentProps, State>{
                     }
                   ]
                 })(
-                  <InputNumber min={0} className="full-width" />
+                  <InputNumber min={0} className="full-width"/>
                 )
               }
             </Form.Item>
@@ -420,9 +419,9 @@ class Tasks extends Component<Props & FormComponentProps, State>{
                       message: 'Please input the task maximum estimate!'
                     }
                   ],
-                  initialValue : this.props.managerStore.task.estimateMax
+                  initialValue: this.props.managerStore.task.estimateMax
                 })(
-                  <InputNumber min={0} className="full-width" />
+                  <InputNumber min={0} className="full-width"/>
                 ) :
                 getFieldDecorator('estimateMax', {
                   rules: [
@@ -432,14 +431,14 @@ class Tasks extends Component<Props & FormComponentProps, State>{
                     }
                   ]
                 })(
-                  <InputNumber min={0} className="full-width" />
+                  <InputNumber min={0} className="full-width"/>
                 )
               }
             </Form.Item>
             <Form.Item label="Description">
               {this.props.managerStore.task.description ?
                 getFieldDecorator('description', {
-                  initialValue : this.props.managerStore.task.description
+                  initialValue: this.props.managerStore.task.description
                 })(
                   <TextArea/>
                 ) :
@@ -457,7 +456,7 @@ class Tasks extends Component<Props & FormComponentProps, State>{
                       message: 'Please input the task type!'
                     }
                   ],
-                  initialValue : this.props.managerStore.task.taskType
+                  initialValue: this.props.managerStore.task.taskType
                 })(
                   <Select>
                     <Option value="Task">Task</Option>
@@ -488,7 +487,7 @@ class Tasks extends Component<Props & FormComponentProps, State>{
                       message: 'Please input the task work type!'
                     }
                   ],
-                  initialValue : this.props.managerStore.task.workType
+                  initialValue: this.props.managerStore.task.workType
                 })(
                   <Select>
                     <Option value="Backend">Backend</Option>
@@ -521,63 +520,31 @@ class Tasks extends Component<Props & FormComponentProps, State>{
             <Form.Item label="Task Cost">
               {this.props.managerStore.task.taskCost ?
                 getFieldDecorator('taskCost', {
-                  rules: [
-                    {
-                      required: true,
-                      message: 'Please input the task cost!'
-                    }
-                  ],
-                  initialValue : this.props.managerStore.task.taskCost
+                  initialValue: this.props.managerStore.task.taskCost
                 })(
-                  <InputNumber min={0} className="full-width" />
+                  <InputNumber min={0} className="full-width"/>
                 ) :
-                getFieldDecorator('taskCost', {
-                  rules: [
-                    {
-                      required: true,
-                      message: 'Please input the task cost!'
-                    }
-                  ]
-                })(
-                  <InputNumber min={0} className="full-width" />
+                getFieldDecorator('taskCost', {})(
+                  <InputNumber min={0} className="full-width"/>
                 )
               }
             </Form.Item>
             <Form.Item label="Crash Cost">
               {this.props.managerStore.task.crashCost ?
                 getFieldDecorator('crashCost', {
-                  rules: [
-                    {
-                      required: true,
-                      message: 'Please input the task crash cost!'
-                    }
-                  ],
-                  initialValue : this.props.managerStore.task.crashCost
+                  initialValue: this.props.managerStore.task.crashCost
                 })(
-                  <InputNumber min={0} className="full-width" />
+                  <InputNumber min={0} className="full-width"/>
                 ) :
-                getFieldDecorator('crashCost', {
-                  rules: [
-                    {
-                      required: true,
-                      message: 'Please input the task crash cost!'
-                    }
-                  ]
-                })(
-                  <InputNumber min={0} className="full-width" />
+                getFieldDecorator('crashCost', {})(
+                  <InputNumber min={0} className="full-width"/>
                 )
               }
             </Form.Item>
             <Form.Item label="Progress">
               {this.props.managerStore.task.progress ?
                 getFieldDecorator('progress', {
-                  rules: [
-                    {
-                      required: true,
-                      message: 'Please input the task progress!'
-                    }
-                  ],
-                  initialValue : this.props.managerStore.task.progress
+                  initialValue: this.props.managerStore.task.progress
                 })(
                   <InputNumber min={0}
                                max={100}
@@ -587,20 +554,13 @@ class Tasks extends Component<Props & FormComponentProps, State>{
                                className="full-width"
                   />
                 ) :
-                getFieldDecorator('progress', {
-                  rules: [
-                    {
-                      required: true,
-                      message: 'Please input the task progress!'
-                    }
-                  ]
-                })(
+                getFieldDecorator('progress', {})(
                   <InputNumber min={0}
                                max={100}
                                step={0.01}
                                formatter={value => `${value as number * 100}%`}
                                parser={value => parseInt((value as string).replace('%', '')) / 100}
-                               className="full-width" />
+                               className="full-width"/>
                 )
               }
             </Form.Item>
@@ -611,31 +571,31 @@ class Tasks extends Component<Props & FormComponentProps, State>{
                     rules: [
                       {
                         message: 'Please input the task predecessors!',
-                        type : "array"
+                        type: "array"
                       }
                     ],
-                    initialValue : this.props.managerStore.task.predecessor
+                    initialValue: this.props.managerStore.task.predecessor
                   })(
                     <Select mode="multiple">
                       {this.props.managerStore.tasks && this.props.managerStore.tasks.map((element, i) => {
-                        if(element.taskId !== this.props.managerStore.task.taskId){
+                        if (element.taskId !== this.props.managerStore.task.taskId) {
                           return <Option key={i} value={element.taskId}>{element.summary}</Option>
                         }
                       })}
                     </Select>
                   )
-                :
+                  :
                   getFieldDecorator('predecessor', {
                     rules: [
                       {
                         message: 'Please input the task predecessors!',
-                        type : "array"
+                        type: "array"
                       }
                     ]
                   })(
                     <Select mode="multiple">
                       {this.props.managerStore.tasks && this.props.managerStore.tasks.map((element, i) => {
-                        if(element.taskId !== this.props.managerStore.task.taskId){
+                        if (element.taskId !== this.props.managerStore.task.taskId) {
                           return <Option key={i} value={element.taskId}>{element.summary}</Option>
                         }
                       })}
@@ -652,11 +612,12 @@ class Tasks extends Component<Props & FormComponentProps, State>{
                         message: 'Please input the task assignee!'
                       }
                     ],
-                    initialValue : this.props.managerStore.task.assignee
+                    initialValue: this.props.managerStore.task.assignee
                   })(
                     <Select>
                       {this.props.managerStore.projectTeam && this.props.managerStore.projectTeam.map((element, i) => {
-                        return <Option key={i} value={element.username}>{`${element.firstName} ${element.lastName}`}</Option>
+                        return <Option key={i}
+                                       value={element.username}>{`${element.firstName} ${element.lastName}`}</Option>
                       })}
                     </Select>
                   )
@@ -670,7 +631,8 @@ class Tasks extends Component<Props & FormComponentProps, State>{
                   })(
                     <Select>
                       {this.props.managerStore.projectTeam && this.props.managerStore.projectTeam.map((element, i) => {
-                        return <Option key={i} value={element.username}>{`${element.firstName} ${element.lastName}`}</Option>
+                        return <Option key={i}
+                                       value={element.username}>{`${element.firstName} ${element.lastName}`}</Option>
                       })}
                     </Select>
                   )
@@ -678,6 +640,7 @@ class Tasks extends Component<Props & FormComponentProps, State>{
             </Form.Item>
           </Form>
         </Modal>
+        }
       </Fragment>
     );
   }

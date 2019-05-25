@@ -9,8 +9,6 @@
     "workType",
     "estimateMin",
     "estimateMax",
-    "taskCost",
-    "crashCost",
     "taskType",
     "predecessor",
     "progress"

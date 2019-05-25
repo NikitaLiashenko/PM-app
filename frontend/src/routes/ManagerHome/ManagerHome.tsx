@@ -101,7 +101,7 @@ class ManagerHome extends Component<Props & RouteComponentProps & FormComponentP
   }
 
   handleOpenProject(projectId : any) {
-    this.props.history.push(`/project/${projectId}`, {projectId});
+    this.props.history.push(`/manager/project/${projectId}`, {projectId});
   };
 
   handleLogout = () => {

@@ -53,6 +53,7 @@ class Gantt extends Component<Props, State>{
             start_date : task.startDate,
             end_date : task.endDate,
             duration : task.estimateMax,
+            estimate : task.estimateMax,
             progress : task.progress,
             isOnCriticalPath : task.isOnCritPath,
             assignee : task.assignee ? [task.assignee].map(assignee => {
@@ -90,7 +91,8 @@ class Gantt extends Component<Props, State>{
         gantt.config.columns = [
           {name : 'text', label : 'Task Name'},
           {name : 'start_date', label : 'Start date', align : 'center'},
-          {name : 'duration', label : 'Duration', align : 'center'},
+          // {name : 'duration', label : 'Duration', align : 'center'},
+          {name : 'estimate', label : 'Estimate', align : 'center', template : function(obj : any){ return obj.estimate}},
           {name : 'assignee', label : 'Assignee', align : 'center', template : function(obj : any){ return obj.assignee || 'unassigned'}}
         ];
 
@@ -178,7 +180,7 @@ class Gantt extends Component<Props, State>{
                     </Col>
                   </Row>
                   <Divider />
-                  <div style={{ height : '100%', width : '100%'}} ref={input => (this.ganttContainer = input)}></div>
+                  <div style={{ height : '60%', width : '100%'}} ref={input => (this.ganttContainer = input)}></div>
                 </div>
               </Col>
             </Row>
