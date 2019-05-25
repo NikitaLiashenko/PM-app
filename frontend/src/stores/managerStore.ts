@@ -492,7 +492,7 @@ class ManagerStore {
     }
 
     runInAction(() => {
-      this.projectCrash = response;
+      this.projectCrash = response.crash;
     });
 
     return Promise.resolve();

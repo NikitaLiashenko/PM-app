@@ -60,6 +60,25 @@ class Crash extends Component<Props, State> {
     });
   };
 
+  componentWillMount(): void {
+    actions.manager.cleanProjectCrash();
+    this.setState({
+      crashLoading : true
+    });
+    actions.manager.getProjectCrash(this.props.projectId)
+      .then(() => {
+        this.setState({
+          crashLoading : false
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+        this.setState({
+          crashLoading : false
+        });
+      });
+  }
+
   ganttContainer : any;
 
   handleOpenCrashView(crashId : string){
@@ -332,7 +351,7 @@ class Crash extends Component<Props, State> {
                       //@ts-ignore
                       size={this.state.tableRowSize}
                       columns={columns}
-                      dataSource={this.props.managerStore.project.crash}
+                      dataSource={this.props.managerStore.projectCrash}
                       //@ts-ignore
                       rowKey={record => record.crashId as string}
                       pagination={{ pageSize : 5}}
