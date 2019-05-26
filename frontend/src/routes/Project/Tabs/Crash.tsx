@@ -118,6 +118,7 @@ class Crash extends Component<Props, State> {
         start_date : task.startDate,
         end_date : task.endDate,
         duration : task.estimateMax,
+        estimate : task.estimateMax,
         progress : task.progress,
         isOnCriticalPath : task.isOnCritPath,
         assignee : task.assignee ? [task.assignee].map(assignee => {
@@ -156,7 +157,8 @@ class Crash extends Component<Props, State> {
     gantt.config.columns = [
       {name : 'text', label : 'Task Name'},
       {name : 'start_date', label : 'Start date', align : 'center'},
-      {name : 'duration', label : 'Duration', align : 'center'},
+      // {name : 'duration', label : 'Duration', align : 'center'},
+      {name : 'estimate', label : 'Estimate', align : 'center', template : function(obj : any){ return obj.estimate}},
       {name : 'assignee', label : 'Assignee', align : 'center', template : function(obj : any){ return obj.assignee || 'unassigned'}}
     ];
 
